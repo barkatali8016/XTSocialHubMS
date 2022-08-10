@@ -8,7 +8,7 @@
     "prod": "NODE_ENV=prod nodemon src/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Barkat Ali",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
