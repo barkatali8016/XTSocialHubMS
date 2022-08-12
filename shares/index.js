@@ -14,5 +14,5 @@ app.listen(port, ()=> console.log(`Share API running on port: ${port}`));
 dotEnv.config();
 connectDB();
 
-app.use('/share', share_post_router);
+app.use(share_post_router);
 
