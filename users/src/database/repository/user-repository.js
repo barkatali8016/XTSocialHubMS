@@ -44,6 +44,18 @@ class UserRepository {
       );
     }
   }
+  async FindUserById({ _id }) {
+    try {
+      const user = await UserModel.findOne({ _id });
+      return user;
+    } catch (error) {
+      throw new APIError(
+        "API Error",
+        STATUS_CODES.INTERNAL_ERROR,
+        "Unable to Create Customer"
+      );
+    }
+  }
 }
 
 module.exports = UserRepository;

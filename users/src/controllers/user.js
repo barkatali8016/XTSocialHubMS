@@ -1,4 +1,6 @@
 const { UserRepository } = require("../database");
+
+const { sendOTPMail, verifyOTPMail } = require("../utils");
 const {
   FormateData,
   GeneratePassword,
@@ -49,18 +51,50 @@ class UserController {
           existingUser.salt
         );
         if (validPassword) {
-          const token = await GenerateSignature({
-            email: email,
-            _id: existingUser._id,
-          });
-          return FormateData({
-            id: existingUser._id,
-            firstname: existingUser.firstname,
-            lastname: existingUser.lastname,
-            email: existingUser.email,
-            token,
-          });
+          const tempToken = await GenerateSignature(
+            {
+              _id: existingUser._id,
+            },
+            "15m"
+          );
+          const stateId = await sendOTPMail(existingUser.email);
+          if (stateId && stateId.state_id) {
+            return FormateData({
+              tempToken,
+              stateId: stateId.state_id,
+            });
+          }
         }
+      }
+      return {};
+    } catch (error) {
+      throw error;
+    }
+  }
+  async verifyOtp({ otp, stateId, _id }) {
+    try {
+      const validOtp = await verifyOTPMail(otp, stateId);
+      console.log(validOtp, "ABC");
+      if (
+        validOtp.code == 913 ||
+        validOtp.code == 915 ||
+        !validOtp.authenticated
+      ) {
+        return FormateData({ ...validOtp });
+      }
+      const existingUser = await this.repository.FindUserById({ _id });
+      console.log(existingUser);
+      if (existingUser) {
+        const token = await GenerateSignature({
+          _id: existingUser._id,
+        });
+        return FormateData({
+          token,
+          email: existingUser.email,
+          firstname: existingUser.firstname,
+          lastname: existingUser.lastname,
+          _id,
+        });
       }
       return {};
     } catch (error) {

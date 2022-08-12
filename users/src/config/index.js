@@ -6,9 +6,9 @@ if (process.env.NODE_ENV !== "prod") {
 } else {
   dotEnv.config();
 }
-// require('../../.env.dev')
 module.exports = {
   PORT: process.env.PORT,
   DB_URL: process.env.MONGODB_URI,
   APP_SECRET: process.env.APP_SECRET,
+  MOJO_API_KEY: process.env.MOJO_API_KEY,
 };

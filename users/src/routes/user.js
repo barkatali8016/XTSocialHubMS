@@ -2,7 +2,9 @@ const { UserController } = require("../controllers");
 const {
   validateSignUpBody,
   validateSignInBody,
+  validateVerifyOtpBody,
 } = require("../utils/validators");
+const UserAuth = require("./middlewares/auth");
 const { STATUS_CODES } = require("../utils/app-errors");
 module.exports = async (app) => {
   const userController = new UserController();
@@ -50,6 +52,35 @@ module.exports = async (app) => {
       const { data } = await userController.SignIn({
         email,
         password,
+      });
+      if (data) {
+        return res.status(STATUS_CODES.OK).json(data);
+      } else {
+        return res
+          .status(STATUS_CODES.INTERNAL_ERROR)
+          .json({ error: "Something went wrong." });
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  //verifyOtp ROUTES
+  app.post("/verifyOtp", UserAuth, async (req, res, next) => {
+    try {
+      const validate = validateVerifyOtpBody(req.body);
+      if (validate.error) {
+        return res.status(STATUS_CODES.BAD_REQUEST).json({
+          error: validate.error.details[0].message,
+        });
+      }
+      const { _id } = req.user;
+
+      const { otp, stateId } = req.body;
+      const { data } = await userController.verifyOtp({
+        otp,
+        stateId,
+        _id,
       });
       if (data) {
         return res.status(STATUS_CODES.OK).json(data);
