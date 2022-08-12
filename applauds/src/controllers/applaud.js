@@ -9,7 +9,7 @@ const {
   BadRequestError,
 } = require('../utils');
 
-class Applaudontroller {
+class ApplaudController {
   constructor() {
     this.repository = new ApplaudRepository();
   }
@@ -28,39 +28,39 @@ class Applaudontroller {
       if (!createdApplaud) {
         return {};
       }
-
-      return FormateData({ id: createdUser._id });
+      console.log(createdApplaud);
+      return FormateData({ id: createdApplaud._id });
     } catch (error) {
       throw new APIError('Data Not found', error);
     }
   }
-  async SignIn({ email, password }) {
-    try {
-      const existingUser = await this.repository.FindUser({ email });
-      if (existingUser) {
-        const validPassword = await ValidatePassword(
-          password,
-          existingUser.password,
-          existingUser.salt
-        );
-        if (validPassword) {
-          const token = await GenerateSignature({
-            email: email,
-            _id: existingUser._id,
-          });
-          return FormateData({
-            id: existingUser._id,
-            firstname: existingUser.firstname,
-            lastname: existingUser.lastname,
-            email: existingUser.email,
-            token,
-          });
-        }
-      }
-      return {};
-    } catch (error) {
-      throw error;
-    }
-  }
+  // async SignIn({ email, password }) {
+  //   try {
+  //     const existingUser = await this.repository.FindUser({ email });
+  //     if (existingUser) {
+  //       const validPassword = await ValidatePassword(
+  //         password,
+  //         existingUser.password,
+  //         existingUser.salt
+  //       );
+  //       if (validPassword) {
+  //         const token = await GenerateSignature({
+  //           email: email,
+  //           _id: existingUser._id,
+  //         });
+  //         return FormateData({
+  //           id: existingUser._id,
+  //           firstname: existingUser.firstname,
+  //           lastname: existingUser.lastname,
+  //           email: existingUser.email,
+  //           token,
+  //         });
+  //       }
+  //     }
+  //     return {};
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 }
-module.exports = UserController;
+module.exports = ApplaudController;

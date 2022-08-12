@@ -1,3 +1,3 @@
-// module.exports = {
-//   userRoutes: require("./user"),
-// };
+module.exports = {
+  applaudRoutes: require('./applaud'),
+};

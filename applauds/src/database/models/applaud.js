@@ -13,4 +13,4 @@ const ApplaudSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model('applaud', ApplaudSchema);
+module.exports = mongoose.model('applauds', ApplaudSchema);

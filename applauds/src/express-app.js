@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { userRoutes } = require('./routes');
+const { applaudRoutes } = require('./routes');
 const HandleError = require('./utils/error-handler');
 module.exports = async (app) => {
   app.use(express.json({ limit: '1mb' }));
@@ -11,7 +11,7 @@ module.exports = async (app) => {
   // LISTEN to EVENTS
 
   // Routes
-  // userRoutes(app);
+  applaudRoutes(app);
 
   //ERROR HANDLING
   app.use(HandleError);
