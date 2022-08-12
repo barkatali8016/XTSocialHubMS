@@ -37,3 +37,12 @@ module.exports.validateSignInBody = (body) => {
 
   return schema.validate(body);
 };
+
+module.exports.validateVerifyOtpBody = (body) => {
+  const schema = Joi.object({
+    otp: Joi.string().length(6),
+    stateId: Joi.string().required(),
+  });
+
+  return schema.validate(body);
+};
