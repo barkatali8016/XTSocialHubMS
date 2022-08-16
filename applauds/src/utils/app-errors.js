@@ -1,6 +1,6 @@
 const STATUS_CODES = {
   OK: 200,
-  USER_CREATED: 201,
+  APPLAUD_CREATED: 201,
   BAD_REQUEST: 400,
   UN_AUTHORISED: 403,
   NOT_FOUND: 404,
@@ -33,7 +33,7 @@ class APIError extends AppError {
   constructor(
     name,
     statusCode = STATUS_CODES.INTERNAL_ERROR,
-    description = "Internal Server Error",
+    description = 'Internal Server Error',
     isOperational = true
   ) {
     super(name, statusCode, description, isOperational);
@@ -42,9 +42,9 @@ class APIError extends AppError {
 
 //400
 class BadRequestError extends AppError {
-  constructor(description = "Bad request", logingErrorResponse) {
+  constructor(description = 'Bad request', logingErrorResponse) {
     super(
-      "NOT FOUND",
+      'NOT FOUND',
       STATUS_CODES.BAD_REQUEST,
       description,
       true,
@@ -56,9 +56,9 @@ class BadRequestError extends AppError {
 
 //400
 class ValidationError extends AppError {
-  constructor(description = "Validation Error", errorStack) {
+  constructor(description = 'Validation Error', errorStack) {
     super(
-      "BAD REQUEST",
+      'BAD REQUEST',
       STATUS_CODES.BAD_REQUEST,
       description,
       true,

@@ -7,18 +7,19 @@ const {
 
 //Dealing with data base operations
 class ApplaudRepository {
-  async createApplaud({ postId, userId, salt }) {
+  async createApplaud({ postId, userId, applaud }) {
     try {
+      console.log(postId, userId, applaud);
       const recordExist = await ApplaudModel.findOne({ postId, userId });
       if (recordExist) {
         return null;
       }
-      const applaud = new ApplaudModel({
+      const applaudModel = new ApplaudModel({
         postId,
         userId,
-        salt,
+        applaud,
       });
-      const applaudResult = await applaud.save();
+      const applaudResult = await applaudModel.save();
       return applaudResult;
     } catch (err) {
       throw new APIError(
