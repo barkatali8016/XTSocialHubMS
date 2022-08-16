@@ -6,7 +6,7 @@ const ApplaudSchema = new Schema(
   {
     postId: { type: String, require: true },
     userId: { type: String, require: true },
-    applaud: { type: String, require: true },
+    applaudId: { type: Number, require: true },
   },
   {
     timestamps: true,

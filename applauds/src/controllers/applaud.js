@@ -5,12 +5,12 @@ class ApplaudController {
   constructor() {
     this.repository = new ApplaudRepository();
   }
-  async applaud({ postId, userId, applaud }) {
+  async applaud({ postId, userId, applaudId }) {
     try {
       const createdApplaud = await this.repository.createApplaud({
         postId,
         userId,
-        applaud,
+        applaudId,
       });
       if (!createdApplaud) {
         return {};
