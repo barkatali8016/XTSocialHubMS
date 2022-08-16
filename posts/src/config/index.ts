@@ -1,8 +1,9 @@
 import { config } from 'dotenv';
+import { resolve } from 'path';
 
 if (process.env.NODE_ENV !== 'prod') {
-    const configFileName = `.env${process.env.NODE_ENV?.trim()}`;
-    config({ path: configFileName });
+    const configFileName = `.env.${process.env.NODE_ENV?.trim()}`;
+    config({ path: resolve(process.cwd(), configFileName) });
 } else {
     config()
 }

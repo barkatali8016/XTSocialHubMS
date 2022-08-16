@@ -1,13 +1,26 @@
-import express, { Application, Request, Response } from "express";
-import "dotenv/config";
-
-const app: Application = express();
-const port = process.env.PORT || 4000;
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
-
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
-});
+import express from "express";
+import { configuration } from "./config";
+import { databaseConnection } from "./database";
+import expressApp from "./express-app";
+//CREATING EXPRESS SERVER
+const StartServer = async () => {
+  try {
+    const app = express();
+    await databaseConnection();
+    await expressApp(app);
+    app.get("/", (req, res) => {
+      return res.send("HI WELCOME TO XT SOCIAL HUB");
+    });
+    app
+      .listen(configuration.PORT, () => {
+        console.log(`USER SERVICE IS RUNNING ON PORT ${configuration.PORT}`);
+      })
+      .on("error", (error) => {
+        console.log(error);
+        process.exit(1);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
+StartServer();
