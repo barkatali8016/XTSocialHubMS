@@ -9,7 +9,7 @@ const { EMOJI_LIST } = require('../config');
 module.exports = async (app) => {
   const applaudController = new ApplaudController();
 
-  app.post('/api/post', async (req, res, next) => {
+  app.post('/api/applaud', async (req, res, next) => {
     try {
       console.log(req.body);
       const { postId, applaudId } = req.body;
@@ -18,7 +18,7 @@ module.exports = async (app) => {
           .status(STATUS_CODES.BAD_REQUEST)
           .json({ error: 'Invalid Applaud Type' });
       }
-      const userId = req.body.postId; // need to change req.get("Authorization") once token is passed
+      const userId = req.user._id;
       console.log(postId, userId, applaudId);
       const { data } = await applaudController.applaud({
         postId,
