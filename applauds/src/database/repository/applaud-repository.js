@@ -4,6 +4,7 @@ const {
   BadRequestError,
   STATUS_CODES,
 } = require('../../utils/app-errors');
+const mongoose = require('mongoose');
 
 //Dealing with data base operations
 class ApplaudRepository {
@@ -30,18 +31,20 @@ class ApplaudRepository {
     }
   }
 
-  // async FindUser({ email }) {
-  //   try {
-  //     const user = await UserModel.findOne({ email });
-  //     return user;
-  //   } catch (error) {
-  //     throw new APIError(
-  //       'API Error',
-  //       STATUS_CODES.INTERNAL_ERROR,
-  //       'Unable to Create Customer'
-  //     );
-  //   }
-  // }
+  async deleteApplaud(id) {
+    try {
+      console.log(typeof id);
+      const deleted = await ApplaudModel.findByIdAndDelete(id);
+      console.log('deleted', deleted);
+      return deleted;
+    } catch (error) {
+      throw new APIError(
+        'API Error',
+        STATUS_CODES.INTERNAL_ERROR,
+        'Unable to Delete Applaud'
+      );
+    }
+  }
 }
 
 module.exports = ApplaudRepository;
