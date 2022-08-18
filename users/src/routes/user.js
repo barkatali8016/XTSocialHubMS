@@ -6,9 +6,10 @@ const {
 } = require("../utils/validators");
 const UserAuth = require("./middlewares/auth");
 const { STATUS_CODES } = require("../utils/app-errors");
-module.exports = async (app) => {
+const { SubscribeMessage } = require("../utils");
+module.exports = async (app, channel) => {
   const userController = new UserController();
-
+  await SubscribeMessage(channel, userController);
   //SIGN UP ROUTES
   app.post("/signup", async (req, res, next) => {
     try {

@@ -2,18 +2,25 @@ import express from "express";
 import { configuration } from "./config";
 import { databaseConnection } from "./database";
 import expressApp from "./express-app";
+import { CreateChannel } from "./utils";
 //CREATING EXPRESS SERVER
 const StartServer = async () => {
   try {
     const app = express();
+    //DATABASE CONNECTION
     await databaseConnection();
-    await expressApp(app);
+
+    // create channel for message broker
+    const channel = await CreateChannel();
+
+    // EXPRESS APP
+    await expressApp(app, channel);
     app.get("/", (req, res) => {
       return res.send("HI WELCOME TO XT SOCIAL HUB");
     });
     app
       .listen(configuration.PORT, () => {
-        console.log(`USER SERVICE IS RUNNING ON PORT ${configuration.PORT}`);
+        console.log(`POST SERVICE IS RUNNING ON PORT ${configuration.PORT}`);
       })
       .on("error", (error) => {
         console.log(error);

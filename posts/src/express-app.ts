@@ -1,17 +1,15 @@
-import express, {json, urlencoded, Express} from 'express';
+import express, { json, urlencoded, Express } from "express";
 import cors from "cors";
-import { postRoutes } from './routes';
-export default async (app: Express) => {
-  app.use(json({ limit: '1mb' }));
-  app.use(urlencoded({ extended: true, limit: '1mb' }));
+import { postRoutes } from "./routes";
+export default async (app: Express, channel: any) => {
+  app.use(json({ limit: "1mb" }));
+  app.use(urlencoded({ extended: true, limit: "1mb" }));
   app.use(cors());
-  app.use(express.static(__dirname + '/public'));
-
-  // LISTEN to EVENTS
+  app.use(express.static(__dirname + "/public"));
 
   // Routes
-  postRoutes(app);
+  postRoutes(app, channel);
 
   //ERROR HANDLING
-//   app.use(HandleError);
+  //   app.use(HandleError);
 };

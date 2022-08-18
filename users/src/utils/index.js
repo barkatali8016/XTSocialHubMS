@@ -1,6 +1,14 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { APP_SECRET, MOJO_API_KEY } = require("../config");
+const amqplib = require("amqplib");
+const {
+  APP_SECRET,
+  MOJO_API_KEY,
+  USER_BINDING_KEY,
+  EXCHANGE_NAME,
+  MESSAGE_BROKER_URL,
+  QUEUE_NAME,
+} = require("../config");
 const MOJO_AUTH_CONFIG = {
   apiKey: MOJO_API_KEY,
 };
@@ -52,4 +60,44 @@ module.exports.sendOTPMail = async (email) => {
 };
 module.exports.verifyOTPMail = async (otp, stateId) => {
   return mojoAuth.mojoAPI.verifyEmailOTP(otp, stateId);
+};
+
+// MESSAGE BROKER
+
+// create channel
+module.exports.CreateChannel = async () => {
+  try {
+    const connection = await amqplib.connect(MESSAGE_BROKER_URL);
+    const channel = await connection.createChannel();
+    await channel.assertExchange(EXCHANGE_NAME, "direct", {
+      durable: false,
+    });
+    return channel;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// FOR USER WE DONT NEED => publish message
+// module.exports.PublishMessage = async (channel, binding_key, message) => {
+//   try {
+//     await channel.publish(EXCHANGE_NAME, binding_key, Buffer.from(message));
+//   } catch (error) {
+//     throw error;
+//   }
+// };
+
+// subscribe message
+module.exports.SubscribeMessage = async (channel, service) => {
+  try {
+    const appQueue = await channel.assertQueue(QUEUE_NAME);
+    channel.bindQueue(appQueue.queue, EXCHANGE_NAME, USER_BINDING_KEY);
+    channel.consume(appQueue.queue, (data) => {
+      console.log("RECEIVED DATA");
+      console.log(data.content.toString());
+      channel.ack(data);
+    });
+  } catch (error) {
+    throw error;
+  }
 };
