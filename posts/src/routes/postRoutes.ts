@@ -8,6 +8,7 @@ export const postRoutes = async (app: Express, channel: any) => {
   app.post("/api/post/create", async (req, res, next) => {
     try {
       const result = await postController.createNewPost(req.body);
+
       PublishMessage(
         channel,
         USER_BINDING_KEY,

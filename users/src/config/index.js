@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== "prod") {
 } else {
   dotEnv.config();
 }
+
 module.exports = {
   PORT: process.env.PORT,
   DB_URL: process.env.MONGODB_URI,

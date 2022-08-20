@@ -20,7 +20,9 @@ const StartServer = async () => {
     });
     app
       .listen(configuration.PORT, () => {
-        console.log(`POST SERVICE IS RUNNING ON PORT ${configuration.PORT}`);
+        console.log(
+          `============================ POSTS SERVICE IS RUNNING ON PORT ${configuration.PORT} ===================`
+        );
       })
       .on("error", (error) => {
         console.log(error);
