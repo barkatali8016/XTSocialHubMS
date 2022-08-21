@@ -1,21 +1,42 @@
 version: '3.9'
 
 services:
+  #MongoDB services
+  mongo_db:
 
+    image: mongo:latest
+
+    restart: always
+
+    ports:
+      - 2717:27017
+
+    volumes:
+      - mongo_db:/data/db
+
+  #Node API service
   api:
 
     build: .
 
     ports:
-
       - 3000:3000
 
     volumes:
-
       - .:/shares/src/app
 
     environment:
 
+      APP_SECRET: 'barkat'
+
+      MONGODB_URI: 'mongodb://mongo_db:27017/applauds'
+
       PORT: 3000
 
-      MONGODB_URI: 'mongodb+srv://xt_social:xt_social123@cluster0.2w6mj.mongodb.net/applauds?retryWrites=true&w=majority'
+      MOJO_API_KEY: 'test-39c833cd-adc0-4787-8027-400b8551d49f'
+      
+    depends_on:
+      - mongo_db
+
+volumes:
+  mongo_db: {}
