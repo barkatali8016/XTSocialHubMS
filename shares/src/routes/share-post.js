@@ -1,13 +1,33 @@
 var express = require('express');
+var bodyParser = require('body-parser');
+var jsonParser = bodyParser.json();
 var router = express.Router();
+const { STATUS_CODES } = require("../utils/app-errors");
+const { validateSharePostBody } = require('../utils/validators')
 
 /* Share a post. */
-router.post('/post/:postId/share', async (req, res)=>{
-  try{
+router.post('/post/:postId/share', jsonParser, async (req, res, next) => {
+  try {
+    const validate = validateSharePostBody(req.body);
     const postId = req.params.postId;
-    res.send(`Post with postId: ${postId} shared successfully.`);
-  } catch(error){
-    console.error(`Error: ${error}`);
+    if (validate.error) {
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
+        error: validate.error.details[0].message,
+      });
+    }
+    const { userId } = req.body;
+    const data = {
+      postId, userId
+    };
+    if (data) {
+      return res.status(STATUS_CODES.OK).json("Post shared successfully.");
+    } else {
+      return res
+        .status(STATUS_CODES.INTERNAL_ERROR)
+        .json({ error: "Something went wrong." });
+    }
+  } catch (error) {
+    next(error);
   }
 });
 
