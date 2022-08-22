@@ -1,6 +1,12 @@
 # Created the project using typescript
 
+## To run the application
+    npm run dev
+
 ## Integrated with Es-Lint
+
+## To run the DBLocally using Homebrew
+    brew services start mongodb/brew/mongodb-community
 
 ### Steps Followed:
     1) yarn add eslint --dev
