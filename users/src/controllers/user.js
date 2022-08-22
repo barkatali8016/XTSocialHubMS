@@ -101,5 +101,25 @@ class UserController {
       throw error;
     }
   }
+  async SubscribeEvents(payload) {
+    const { event, data } = JSON.parse(payload);
+
+    switch (event) {
+      case "POST_ADDED":
+      case "POST_DELETED":
+      case "POST_UPDATED":
+        // UPDATE USER DB
+        console.log(event, "EVENT in Controller");
+        break;
+      case "COMMENT_ADDED":
+      case "COMMENT_DELETED":
+      case "COMMENT_UPDATED":
+        // UPDATE USER DB
+        console.log(event, "EVENT in Controller");
+        break;
+      default:
+        break;
+    }
+  }
 }
 module.exports = UserController;
