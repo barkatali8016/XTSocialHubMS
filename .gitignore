@@ -9,7 +9,7 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
-
+rabbitmq
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
@@ -56,13 +56,13 @@ jspm_packages/
 .yarn-integrity
 
 # dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
 # .env
-# .env.dev
+# .env.development.local
+# .env.test.local
+# .env.production.local
+# .env.local
+.env
+.env.dev
 
 # vuepress v2.x temp and cache directory
 .temp
