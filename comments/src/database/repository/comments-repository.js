@@ -36,6 +36,19 @@ class CommentsRepository {
       throw err;
     }
   }
+
+  async EditComment({commentId, comment}) {
+    try {
+      if (!commentId) {
+        return null;
+      }
+      // const comment = new CommentsModel();
+      const editedComment = await CommentsModel.findByIdAndUpdate(commentId, {"commentText":comment});
+      return editedComment;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = CommentsRepository;

@@ -51,4 +51,25 @@ module.exports = async (app) => {
       throw error;
     }
   });
+
+  app.put('/api/posts/editComment/',CommentsAuth, async (req, res, next) => {
+    try {
+      const {commentId} = req.body;
+      const {commentText} = req.body;
+      console.log("commenttextnId",commentText, commentId );
+
+      const { data } = await commentsController.editComment({
+        commentId, commentText
+      });
+      if (data) {
+        return res.status(STATUS_CODES.OK).json(data);
+      } else {
+        return res
+          .status(STATUS_CODES.BAD_REQUEST)
+          .json({ error: 'Something went wrong' });
+      }
+    } catch (error) {
+      throw error;
+    }
+  });
 };

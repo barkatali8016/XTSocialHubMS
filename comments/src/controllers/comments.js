@@ -38,5 +38,18 @@ class CommentsController {
       throw error;
     }
   }
+
+  async editComment({commentId, comment }) {
+    try {
+      const editedComment = await this.repository.EditComment({ commentId, comment });
+      if (!editedComment) {
+        return {};
+      }
+      console.log(editedComment);
+      return FormatData({ editedComment });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 module.exports = CommentsController;
