@@ -51,4 +51,18 @@ module.exports = async (app) => {
       next(error);
     }
   });
+  app.delete('/api/applaud/:id', async (req, res, next) => {
+    try {
+      const { data } = await applaudController.deleteApplaud(req.params.id);
+      if (data) {
+        return res.status(STATUS_CODES.APPLAUD_DELETED).json(data);
+      } else {
+        return res
+          .status(STATUS_CODES.NOT_FOUND)
+          .json({ error: 'Applaud not found' });
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
 };
