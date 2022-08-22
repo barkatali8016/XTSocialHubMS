@@ -6,6 +6,9 @@ export default async (app: Express) => {
   app.use(urlencoded({ extended: true, limit: '1mb' }));
   app.use(cors());
   app.use(express.static(__dirname + '/public'));
+  app.use('/asset/images', express.static('images'));
+
+  // Added comment
 
   // LISTEN to EVENTS
 

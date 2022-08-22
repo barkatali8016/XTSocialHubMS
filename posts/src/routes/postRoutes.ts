@@ -1,5 +1,7 @@
 import { Express } from 'express';
 import { PostController } from '../controller';
+import { multerInstance } from '../utils';
+import { MulterError, ErrorCode } from 'multer';
 
 export const postRoutes = async (app: Express) => {
     const postController = new PostController();
@@ -26,7 +28,6 @@ export const postRoutes = async (app: Express) => {
     });
 
     app.get('/api/post/:id', async (req, res, next) => {
-        // console.log(req.body);
         try {
             const result = await postController.getIndividualPost(req.params.id);
             res.statusCode = 200;
@@ -36,4 +37,8 @@ export const postRoutes = async (app: Express) => {
             next(error)
         }
     });
+
+    app.post('/image-upload', multerInstance, function (req, res) {
+        res.send({ message: 'success' })
+    })
 }

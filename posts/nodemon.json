@@ -1,0 +1,10 @@
+{
+    "signal": "SIGTERM",
+    "env": {
+        "NODE_ENV": "development",
+        "MONGODB_URI": "mongodb+srv://admin:AtlCmQczUxLJWWvT@cluster0.aplg7mi.mongodb.net/posts?retryWrites=true&w=majority",
+        "PORT": "3000"
+    },
+    "ext": "ts",
+    "exec": "ts-node src/index.ts"
+}

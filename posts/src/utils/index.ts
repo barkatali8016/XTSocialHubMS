@@ -1,0 +1,1 @@
+export { multerInstance } from './imageStorage';
