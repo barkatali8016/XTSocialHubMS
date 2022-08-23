@@ -3,7 +3,8 @@ var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var router = express.Router();
 const { STATUS_CODES } = require("../utils/app-errors");
-const { validateSharePostBody } = require('../utils/validators')
+const { validateSharePostBody } = require('../utils/validators');
+const  SharePostModel  = require('../database/models/share-post');
 
 /* Share a post. */
 router.post('/post/:postId/share', jsonParser, async (req, res, next) => {
@@ -16,10 +17,13 @@ router.post('/post/:postId/share', jsonParser, async (req, res, next) => {
       });
     }
     const { userId } = req.body;
-    const data = {
-      postId, userId
-    };
-    if (data) {
+    const data = new SharePostModel({
+      postId,
+      share_details : [{userId, sharedTime: Date.now()}],
+      share_count: 1 
+    });
+    const response = await data.save(); 
+    if (response) {
       return res.status(STATUS_CODES.OK).json("Post shared successfully.");
     } else {
       return res
