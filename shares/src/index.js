@@ -8,7 +8,7 @@ const StartServer = async () => {
   await databaseConnection();
   await expressApp(app);
   app.get('/', (req, res) => {
-    return res.send('HI WELCOME TO XT SOCIAL HUB');
+    return res.send('HI WELCOME TO XT SOCIAL HUB SHARE POST SERVICE');
   });
   app
     .listen(PORT, () => {

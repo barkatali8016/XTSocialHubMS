@@ -29,7 +29,7 @@ services:
 
       APP_SECRET: 'barkat'
 
-      MONGODB_URI: 'mongodb://mongo_db:27017/applauds'
+      MONGODB_URI: 'mongodb://mongo_db:27017/shares'
 
       PORT: 3000
 

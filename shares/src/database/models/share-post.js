@@ -12,4 +12,4 @@ const SharePostSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model('sharePost', SharePostSchema);
+module.exports = mongoose.model('shares', SharePostSchema);
