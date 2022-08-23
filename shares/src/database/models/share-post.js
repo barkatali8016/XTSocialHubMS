@@ -5,11 +5,9 @@ const Schema = mongoose.Schema;
 const SharePostSchema = new Schema(
   {
     postId: { type: String, require: true },
-    userId: { type: String, require: true },
+    share_details: [{user_id: String, sharedTime: Date}],
+    share_count: {type: Number, require: true}
   },
-  {
-    timestamps: true,
-  }
 );
 
 module.exports = mongoose.model('shares', SharePostSchema);
