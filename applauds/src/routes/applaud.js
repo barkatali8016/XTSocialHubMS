@@ -12,21 +12,52 @@ module.exports = async (app) => {
   app.post('/api/applaud', async (req, res, next) => {
     try {
       console.log(req.body);
-      const { postId, applaudId } = req.body;
-      if (!EMOJI_LIST.includes(applaudId)) {
+      const { postId, applaudKey } = req.body;
+      if (!EMOJI_LIST.includes(applaudKey)) {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
-          .json({ error: 'Invalid Applaud Type' });
+          .json({ error: 'Invalid Applaud Key' });
       }
       const userId = req.user._id;
-      console.log(postId, userId, applaudId);
+
+      console.log(postId, userId, applaudKey);
       const { data } = await applaudController.applaud({
         postId,
         userId,
-        applaudId,
+        applaudKey,
       });
       if (data) {
         return res.status(STATUS_CODES.APPLAUD_CREATED).json(data);
+      } else {
+        return res
+          .status(STATUS_CODES.BAD_REQUEST)
+          .json({ error: 'Applaud already exist.' });
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.put('/api/applaud', async (req, res, next) => {
+    try {
+      console.log(req.body);
+      const { applaudId, applaudKey } = req.body;
+      if (!EMOJI_LIST.includes(applaudKey)) {
+        return res
+          .status(STATUS_CODES.BAD_REQUEST)
+          .json({ error: 'Invalid Applaud Key' });
+      }
+      const userId = req.user._id;
+
+      console.log(userId, applaudId, applaudKey);
+      const { data } = await applaudController.updateApplaud({
+        applaudId,
+        userId,
+        applaudKey,
+      });
+
+      if (data) {
+        return res.status(STATUS_CODES.APPLAUD_UPDATED).json(data);
       } else {
         return res
           .status(STATUS_CODES.BAD_REQUEST)

@@ -1,16 +1,17 @@
 const { ApplaudRepository } = require('../database');
-const { FormatData, APIError } = require('../utils');
+const { FormatData } = require('../utils');
+const { APIError } = require('../utils/app-errors');
 
 class ApplaudController {
   constructor() {
     this.repository = new ApplaudRepository();
   }
-  async applaud({ postId, userId, applaudId }) {
+  async applaud({ postId, userId, applaudKey }) {
     try {
       const createdApplaud = await this.repository.createApplaud({
         postId,
         userId,
-        applaudId,
+        applaudKey,
       });
       if (!createdApplaud) {
         return {};
@@ -18,7 +19,21 @@ class ApplaudController {
       console.log(createdApplaud);
       return FormatData({ id: createdApplaud._id });
     } catch (error) {
-      throw new APIError('Data Not found', error);
+      throw error;
+    }
+  }
+
+  async updateApplaud({ applaudId, userId, applaudKey }) {
+    try {
+      const updatedApplaud = await this.repository.updateApplaud({
+        applaudId,
+        userId,
+        applaudKey,
+      });
+      console.log('here====');
+      return FormatData({ id: updatedApplaud._id });
+    } catch (error) {
+      throw error;
     }
   }
 
@@ -29,7 +44,9 @@ class ApplaudController {
         return {};
       }
       return FormatData({ id: deletedApplaud._id });
-    } catch (error) {}
+    } catch (error) {
+      throw error;
+    }
   }
 }
 module.exports = ApplaudController;

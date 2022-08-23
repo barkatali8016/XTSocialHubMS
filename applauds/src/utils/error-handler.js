@@ -1,23 +1,23 @@
-const { createLogger, transports } = require("winston");
-const { AppError } = require("./app-errors");
+const { createLogger, transports } = require('winston');
+const { AppError } = require('./app-errors');
 
 const LogErrors = createLogger({
   transports: [
     new transports.Console(),
-    new transports.File({ filename: "app_error.log" }),
+    new transports.File({ filename: 'app_error.log' }),
   ],
 });
 
 class ErrorLogger {
   constructor() {}
   async logError(err) {
-    console.log("==================== Start Error Logger ===============");
+    console.log('==================== Start Error Logger ===============');
     LogErrors.log({
       private: true,
-      level: "error",
+      level: 'error',
       message: `${new Date()}-${JSON.stringify(err)}`,
     });
-    console.log("==================== End Error Logger ===============");
+    console.log('==================== End Error Logger ===============');
     // log error with Logger plugins
 
     return false;
@@ -35,12 +35,12 @@ class ErrorLogger {
 const ErrorHandler = async (err, req, res, next) => {
   const errorLogger = new ErrorLogger();
 
-  process.on("uncaughtException", (reason, promise) => {
-    console.log(reason, "UNHANDLED");
+  process.on('uncaughtException', (reason, promise) => {
+    console.log(reason, 'UNHANDLED');
     throw reason; // need to take care
   });
 
-  process.on("uncaughtException", (error) => {
+  process.on('uncaughtException', (error) => {
     errorLogger.logError(error);
     if (errorLogger.isTrustError(err)) {
       //process exist // need restart
@@ -51,7 +51,7 @@ const ErrorHandler = async (err, req, res, next) => {
   // console.log(err.message, '-------> MESSAGE')
   // console.log(err.name, '-------> NAME')
   if (err) {
-    console.log(err, "BABA________________BABA");
+    console.log(err, '--------');
     await errorLogger.logError(err);
     if (errorLogger.isTrustError(err)) {
       if (err.errorStack) {

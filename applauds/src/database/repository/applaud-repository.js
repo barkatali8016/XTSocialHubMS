@@ -8,9 +8,9 @@ const mongoose = require('mongoose');
 
 //Dealing with data base operations
 class ApplaudRepository {
-  async createApplaud({ postId, userId, applaudId }) {
+  async createApplaud({ postId, userId, applaudKey }) {
     try {
-      console.log(postId, userId, applaudId);
+      console.log(postId, userId, applaudKey);
       const recordExist = await ApplaudModel.findOne({ postId, userId });
       if (recordExist) {
         return null;
@@ -18,7 +18,7 @@ class ApplaudRepository {
       const applaudModel = new ApplaudModel({
         postId,
         userId,
-        applaudId,
+        applaudKey,
       });
       const applaudResult = await applaudModel.save();
       return applaudResult;
@@ -31,9 +31,30 @@ class ApplaudRepository {
     }
   }
 
+  async updateApplaud({ applaudId, userId, applaudKey }) {
+    try {
+      if (!mongoose.Types.ObjectId.isValid(applaudId)) {
+        console.log('INVALID');
+        throw new BadRequestError('Invalid Applaud ID');
+      }
+      const applaudResult = await ApplaudModel.findOneAndUpdate(
+        { _id: applaudId },
+        { applaudKey },
+        {
+          new: true,
+        }
+      );
+      return applaudResult;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async deleteApplaud(id) {
     try {
-      console.log(typeof id);
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new BadRequestError('Invalid Applaud ID');
+      }
       const deleted = await ApplaudModel.findByIdAndDelete(id);
       console.log('deleted', deleted);
       return deleted;
