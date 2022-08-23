@@ -19,7 +19,7 @@ router.post('/post/:postId/share', jsonParser, async (req, res, next) => {
     const { userId } = req.body;
     const data = new SharePostModel({
       postId,
-      share_details : [{userId, sharedTime: Date.now()}],
+      share_details : [{user_id : userId, sharedTime: Date.now()}],
       share_count: 1 
     });
     const response = await data.save(); 

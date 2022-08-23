@@ -4,19 +4,19 @@ const { STATUS_CODES } = require("../utils/app-errors");
 const  SharePostModel  = require('../database/models/share-post');
 
 /* Get Share Count By PostId. */
-router.get('/post/:postId/shareCount', async (req, res)=>{
+router.get('/post/:postId/shareCount', async (req, res, next)=>{
     try{
       const postId = req.params.postId.toString();
       const getShareDetails = await SharePostModel.find({"postId": postId});
       if(getShareDetails.length){
-        return res.status(STATUS_CODES.OK).json({shareCount: getShareDetails[0].share_count});
+        return res.status(STATUS_CODES.OK).json({postId, shareCount: getShareDetails[0].share_count});
       }else{
         return res
         .status(STATUS_CODES.NOT_FOUND)
         .json({ error: "Post does not exist." });
       }
     } catch(error){
-      console.error(`Error: ${error}`);
+      next(error)
     }
   });
 
