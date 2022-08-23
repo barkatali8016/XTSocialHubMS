@@ -1,0 +1,1 @@
+export { postDBModel } from './posts';

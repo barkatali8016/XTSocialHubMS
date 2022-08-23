@@ -1,0 +1,13 @@
+{
+  "signal": "SIGTERM",
+  "env": {
+    "NODE_ENV": "development",
+    "MONGODB_URI": "mongodb://mongo_db:27017/posts",
+    "APP_SECRET": "barkat",
+    "PORT": 8000,
+    "MOJO_API_KEY": "test-39c833cd-adc0-4787-8027-400b8551d49f",
+    "MESSAGE_BROKER_URL": "amqp://guest:guest@rabbitmq:5672"
+  },
+  "ext": "ts",
+  "exec": "ts-node src/index.ts"
+}
