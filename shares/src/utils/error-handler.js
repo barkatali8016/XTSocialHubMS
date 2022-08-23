@@ -9,7 +9,7 @@ const LogErrors = createLogger({
 });
 
 class ErrorLogger {
-  constructor() {}
+  constructor() { }
   async logError(err) {
     console.log("==================== Start Error Logger ===============");
     LogErrors.log({

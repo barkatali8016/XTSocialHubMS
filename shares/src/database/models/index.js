@@ -1,3 +1,3 @@
 module.exports = {
-  SharePostModel: require('./share-post'),
+  SharePostModel: require('./share-post-model'),
 };

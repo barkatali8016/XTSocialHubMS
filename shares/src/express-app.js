@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const HandleError = require('./utils/error-handler');
 const Auth = require('./middleware/auth');
-const share_post_router = require('./routes/share-post');
+const share_post_router = require('./routes/share-post-route');
 const share_count_router = require('./routes/share-count');
 const shared_users_router = require('./routes/shared-users');
 
