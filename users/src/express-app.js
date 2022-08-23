@@ -2,7 +2,7 @@ const expres = require("express");
 const cors = require("cors");
 const { userRoutes } = require("./routes");
 const HandleError = require("./utils/error-handler");
-module.exports = async (app) => {
+module.exports = async (app, channel) => {
   app.use(expres.json({ limit: "1mb" }));
   app.use(expres.urlencoded({ extended: true, limit: "1mb" }));
   app.use(cors());
@@ -11,7 +11,7 @@ module.exports = async (app) => {
   // LISTEN to EVENTS
 
   // Routes
-  userRoutes(app);
+  userRoutes(app, channel);
 
   //ERROR HANDLING
   app.use(HandleError);

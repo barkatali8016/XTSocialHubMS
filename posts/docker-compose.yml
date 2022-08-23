@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  #MongoDB services
+  mongo_db:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 2717:27017
+    volumes:
+      - mongo_db:/data/db
+
+  #Node API service
+  api:
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/posts/src/app
+    environment:
+      APP_SECRET: 'barkat'
+      MONGODB_URI: 'mongodb://mongo_db:27017/posts'
+      PORT: 3000
+      MOJO_API_KEY: 'test-39c833cd-adc0-4787-8027-400b8551d49f'
+    depends_on:
+      - mongo_db
+
+volumes:
+  mongo_db: {}

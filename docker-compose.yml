@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  #MongoDB services
+  mongo_db:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 2717:27017
+    volumes:
+      - mongo_db:/data/db
+
+  #Rabbitmq services
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - 15672:15672
+      - 15671:15671
+      - 5672:5672
+    volumes:
+      - ./rabbitmq/lib:/var/lib/rabbitmq
+
+  # Wait for a bit
+  waitforrabbit:
+    image: dadarek/wait-for-dependencies
+    depends_on:
+      - rabbitmq
+    command: rabbitmq:5672
+  #Node users API service
+  users:
+    build:
+      context: ./users
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8001:8001
+    volumes:
+      - ./users:/users/src/app/
+    environment:
+      APP_SECRET: "barkat"
+      MONGODB_URI: "mongodb://mongo_db:27017/users"
+      PORT: 8001
+      MOJO_API_KEY: "test-39c833cd-adc0-4787-8027-400b8551d49f"
+      MESSAGE_BROKER_URL: "amqp://guest:guest@rabbitmq:5672"
+    depends_on:
+      - waitforrabbit
+      - mongo_db
+      - rabbitmq
+
+  #Node posts API service
+  posts:
+    build:
+      context: ./posts
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8000:8000
+    volumes:
+      - ./posts:/posts/src/app/
+    environment:
+      APP_SECRET: "barkat"
+      MONGODB_URI: "mongodb://mongo_db:27017/posts"
+      PORT: 8000
+      MOJO_API_KEY: "test-39c833cd-adc0-4787-8027-400b8551d49f"
+      MESSAGE_BROKER_URL: "amqp://guest:guest@rabbitmq:5672"
+    depends_on:
+      - waitforrabbit
+      - mongo_db
+      - rabbitmq
+
+volumes:
+  mongo_db: {}
