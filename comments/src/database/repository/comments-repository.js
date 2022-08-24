@@ -36,6 +36,38 @@ class CommentsRepository {
       throw err;
     }
   }
+
+  async UpdateComment({ commentId, commentText }) {
+    try {
+      if(!commentId){
+        return null;
+      }
+      const newComment = await CommentsModel.findOneAndUpdate({ _id: commentId },{ commentText },{ new: true })
+      if(newComment){
+        return newComment
+      }else{
+        throw new Error("Comment Id is invalid")
+      }
+    } catch (error) {
+      return error.message;
+    }
+  };
+
+  async DeletedComment({ commentId }){
+    try {
+      if(!commentId){
+        return null;
+      };
+      const deletedComment = await CommentsModel.findOneAndDelete({_id: commentId });
+      if(deletedComment){
+        return deletedComment
+      }else{
+        throw new Error("Comment Id is invalid")
+      }
+    } catch (error) {
+      return error.message;
+    }
+  }
 }
 
 module.exports = CommentsRepository;

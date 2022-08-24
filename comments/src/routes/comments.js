@@ -51,4 +51,37 @@ module.exports = async (app) => {
       throw error;
     }
   });
+
+  app.put('/api/comments/:commentId',CommentsAuth, async(req,res) => {
+    try {
+      console.log(req.user);
+      const commentId = req.params.commentId;
+      console.log(commentId);
+      const updatedComment = req.body.comment;
+      const { newComment } = await commentsController.updateComment({ commentId,updatedComment });
+      if(newComment){
+        return res.status(STATUS_CODES.OK).json({ newComment });
+      }else{
+        return res.status(STATUS_CODES.BAD_REQUEST).json({ error: "Something went wrong"});
+      }
+    } catch (error) {
+      return error.message;
+    }
+  });
+
+  app.delete('/api/comments/:commentId',CommentsAuth, async (req,res) => {
+    try {
+      console.log(req.user);
+      const commentId = req.params.commentId;
+      console.log(commentId);
+      const deletedComment = await commentsController.deletedComment({ commentId });
+      if(deletedComment){
+        return res.status(STATUS_CODES.OK).json({ deletedComment });
+      }else{
+        return res.status(STATUS_CODES.BAD_REQUEST).json({error: "Something went wrong"});
+      }
+    } catch (error) {
+      return error.message;
+    }
+  })
 };
