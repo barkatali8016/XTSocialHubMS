@@ -18,7 +18,8 @@ module.exports = async (app) => {
           .status(STATUS_CODES.BAD_REQUEST)
           .json({ error: 'Invalid Applaud Type' });
       }
-      const userId = req.user._id;
+      // const userId = req.user._id;
+      const userId =1;
       console.log(postId, userId, applaudId);
       const { data } = await applaudController.applaud({
         postId,
@@ -51,9 +52,10 @@ module.exports = async (app) => {
       next(error);
     }
   });
-  app.delete('/api/applaud/:id', async (req, res, next) => {
+  app.get('/api/applaud/:postId', async (req, res, next) => {
     try {
-      const { data } = await applaudController.deleteApplaud(req.params.id);
+      console.log(req.params.postId);
+      const data = await applaudController.getApplaud(req.params.postId);
       if (data) {
         return res.status(STATUS_CODES.APPLAUD_DELETED).json(data);
       } else {
