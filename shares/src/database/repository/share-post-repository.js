@@ -5,7 +5,6 @@ const { APIError, STATUS_CODES } = require('../../utils/app-errors');
 class SharePostRepository {
     async sharepost({ postId, userId }) {
         try {
-            console.log(postId, userId);
             const alreadySharedPost = await SharePostModel.findOneAndUpdate(
                 { postId },
                 {
