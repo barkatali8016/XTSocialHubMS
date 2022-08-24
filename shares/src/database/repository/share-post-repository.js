@@ -15,7 +15,6 @@ class SharePostRepository {
                 { returnNewDocument: true },
             );
             if (alreadySharedPost) {
-                console.log(alreadySharedPost);
                 return alreadySharedPost;
             } else {
                 const shareModel = new SharePostModel({
