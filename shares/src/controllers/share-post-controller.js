@@ -14,7 +14,6 @@ class SharePostController {
             if (!sharePost) {
                 return {};
             }
-            console.log(sharePost);
             return FormatData({ id: sharePost._id });
         } catch (error) {
             throw new APIError('Data Not found', error);
