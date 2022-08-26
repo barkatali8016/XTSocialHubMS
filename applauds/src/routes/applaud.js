@@ -5,8 +5,9 @@ const {
 } = require('../utils/validators');
 const { STATUS_CODES } = require('../utils/app-errors');
 const { EMOJI_LIST } = require('../config');
+const { USER_BINDING_KEY } = require('../../../users/src/config');
 
-module.exports = async (app) => {
+module.exports = async (app, channel) => {
   const applaudController = new ApplaudController();
 
   app.post('/api/applaud', async (req, res, next) => {
@@ -27,6 +28,11 @@ module.exports = async (app) => {
         applaudKey,
       });
       if (data) {
+        PublishMessage(
+          channel,
+          USER_BINDING_KEY,
+          JSON.stringify({ event: 'APPLAUD_ADDED', data: { ...data } })
+        );
         return res.status(STATUS_CODES.APPLAUD_CREATED).json(data);
       } else {
         return res

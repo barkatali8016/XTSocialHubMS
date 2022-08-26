@@ -5,6 +5,6 @@
 #
 
 docker-compose run --rm waitforrabbit
-docker-compose up posts users
+docker-compose up posts users applauds
 
 # docker-compose up posts users
