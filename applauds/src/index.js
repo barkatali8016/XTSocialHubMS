@@ -8,11 +8,11 @@ const StartServer = async () => {
   await databaseConnection();
   await expressApp(app);
   app.get('/', (req, res) => {
-    return res.send('HI WELCOME TO XT SOCIAL HUB SHARE POST SERVICE');
+    return res.send('HI WELCOME TO XT SOCIAL HUB');
   });
   app
     .listen(PORT, () => {
-      console.log(`Share service running on port ${PORT}`);
+      console.log(`Applaud Service is running on port ${PORT}`);
     })
     .on('error', (error) => {
       console.log(error);
