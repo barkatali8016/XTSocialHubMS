@@ -1,16 +1,20 @@
 import { Express } from "express";
 import { PostController } from "../controller";
-import { multerInstance } from "../utils";
-import { MulterError, ErrorCode } from "multer";
 
-import { PublishMessage } from "../utils";
+import { CalculateReadingTime, PublishMessage } from "../utils";
 import { configuration } from "../config";
+import { multerInstance, PostsAuth } from "./middlewares";
+import { MulterError } from "multer";
+
 const { USER_BINDING_KEY } = configuration;
 
 export const postRoutes = async (app: Express, channel: any) => {
   const postController = new PostController();
-  app.post("/api/post/create", async (req, res, next) => {
+  app.post("/api/post/create", PostsAuth, async (req, res, next) => {
     try {
+      const { content } = req.body;
+      const readingTime = CalculateReadingTime(content);
+      req.body.readingTime = readingTime;
       const result = await postController.createNewPost(req.body);
       PublishMessage(
         channel,
@@ -25,7 +29,7 @@ export const postRoutes = async (app: Express, channel: any) => {
     }
   });
 
-  app.get("/api/post/list", async (_, res, next) => {
+  app.get("/api/post/list", PostsAuth, async (_, res, next) => {
     try {
       const result = await postController.getAllPosts();
       res.statusCode = 200;
@@ -36,7 +40,7 @@ export const postRoutes = async (app: Express, channel: any) => {
     }
   });
 
-  app.get("/api/post/:id", async (req, res, next) => {
+  app.get("/api/post/:id", PostsAuth, async (req, res, next) => {
     try {
       const result = await postController.getIndividualPost(req.params.id);
       res.statusCode = 200;
@@ -47,7 +51,32 @@ export const postRoutes = async (app: Express, channel: any) => {
     }
   });
 
-  app.post("/image-upload", multerInstance, function (req, res) {
-    res.send({ message: "success" });
+  app.post("/api/post/image-upload", PostsAuth, function (req, res) {
+    let message = 'success';
+    multerInstance(req, res, (err) => {
+      if (!err) {
+        res.statusCode = 200;
+        return res.send({ message });
+      }
+      res.statusCode = 500;
+      if (err instanceof MulterError && err.code === 'LIMIT_FILE_SIZE') {
+        message = `Image size should be less than 2MB.`;
+        return res.send({ message });
+      }
+      message = 'Image should be of type png, jpg, jpeg and gif';
+      res.send({ message });
+    });
+  });
+
+  // THis is just a __private link__ for now for deleting the post
+  app.delete('/api/post/:id', PostsAuth, async (req, res, next) => {
+    try {
+      const result = await postController.deleteIndividualPost(req.params.id);
+      res.statusCode = 200;
+      res.send(result);
+    } catch (error) {
+      console.log(error);
+      next(error)
+    }
   });
 };
