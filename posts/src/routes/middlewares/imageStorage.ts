@@ -2,7 +2,7 @@ import multer from 'multer';
 import { extname } from 'path'
 
 const validFileType = /jpeg|jpg|png|gif/;
-const maxFileSize = 2000000 // 2MB
+const maxFileSize = 2000000 // 2MB - 2 * 1024 * 1024
 
 const imageStorage = multer.diskStorage({
     destination: (req, file, cb) => {

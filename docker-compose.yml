@@ -31,17 +31,13 @@ services:
     build:
       context: ./users
       dockerfile: Dockerfile
+    container_name: users
     restart: always
     ports:
       - 8001:8001
     volumes:
       - ./users:/users/src/app/
-    environment:
-      APP_SECRET: 'barkat'
-      MONGODB_URI: 'mongodb://mongo_db:27017/users'
-      PORT: 8001
-      MOJO_API_KEY: 'test-39c833cd-adc0-4787-8027-400b8551d49f'
-      MESSAGE_BROKER_URL: 'amqp://guest:guest@rabbitmq:5672'
+    env_file: users/.env.dev
     depends_on:
       - waitforrabbit
       - mongo_db
@@ -52,33 +48,32 @@ services:
     build:
       context: ./posts
       dockerfile: Dockerfile
+    container_name: posts
     restart: always
     ports:
       - 8000:8000
     volumes:
       - ./posts:/posts/src/app/
-    environment:
-      APP_SECRET: 'barkat'
-      MONGODB_URI: 'mongodb://mongo_db:27017/posts'
-      PORT: 8000
-      MOJO_API_KEY: 'test-39c833cd-adc0-4787-8027-400b8551d49f'
-      MESSAGE_BROKER_URL: 'amqp://guest:guest@rabbitmq:5672'
+    env_file: posts/.env.dev
     depends_on:
       - waitforrabbit
       - mongo_db
       - rabbitmq
 
-  applauds:
+  #Node shares API service
+  shares:
     build:
-      context: ./applauds
+      context: ./shares
       dockerfile: Dockerfile
+    container_name: shares
+    restart: always
     ports:
       - 8002:8002
     volumes:
-      - ./applauds:/applauds/src/app
+      - ./shares:/shares/src/app
     environment:
       APP_SECRET: 'barkat'
-      MONGODB_URI: 'mongodb://mongo_db:27017/applauds'
+      MONGODB_URI: 'mongodb://mongo_db:27017/shares'
       PORT: 8002
       MOJO_API_KEY: 'test-39c833cd-adc0-4787-8027-400b8551d49f'
       MESSAGE_BROKER_URL: 'amqp://guest:guest@rabbitmq:5672'

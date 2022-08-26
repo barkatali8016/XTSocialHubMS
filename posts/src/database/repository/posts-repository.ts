@@ -28,4 +28,14 @@ export class PostRepository {
       return Promise.reject();
     }
   }
+
+  public async deleteIndividualPost(postId: string) {
+    try {
+      return await postDBModel.deleteOne({ _id: postId });
+    } catch (error) {
+      console.log(error);
+      return Promise.reject('Unable to delete the post');
+    }
+  }
+
 }
