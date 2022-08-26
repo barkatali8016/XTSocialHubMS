@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { APP_SECRET, EXCHANGE_NAME, MESSAGE_BROKER_URL } = require('../config');
+const amqplib = require('amqplib');
 
 //Utility functions
 module.exports.ValidateSignature = async (req) => {
@@ -41,7 +42,7 @@ module.exports.CreateChannel = async () => {
 };
 
 // publish message
-export const PublishMessage = async (channel, binding_key, message) => {
+module.exports.PublishMessage = async (channel, binding_key, message) => {
   try {
     await channel.publish(EXCHANGE_NAME, binding_key, Buffer.from(message));
   } catch (error) {
