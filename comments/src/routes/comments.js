@@ -2,11 +2,13 @@ const { CommentsController } = require("../controllers");
 const CommentsAuth = require("./middlewares/auth");
 const { STATUS_CODES } = require("../utils/app-errors");
 const { randomBytes } = require("crypto");
+const { PublishMessage } = require("../utils");
+const { POST_BINDING_KEY } = require("../config");
 
-module.exports = async (app) => {
+module.exports = async (app, channel) => {
   const commentsController = new CommentsController();
   // ADD COMMENT
-  app.post('/api/posts/:postId/comments',CommentsAuth, async (req, res, next) => {
+  app.post('/api/comments/:postId/addComment',CommentsAuth, async (req, res, next) => {
     try {
       console.log(req.body, req.user);
       const postId = req.params.postId;
@@ -20,6 +22,11 @@ module.exports = async (app) => {
         authorName, 
       });
       if (data) {
+        PublishMessage(
+          channel,
+          POST_BINDING_KEY,
+          JSON.stringify({ event: "COMMENT_ADDED", data: { ...data } })
+        );
         return res.status(STATUS_CODES.COMMENT_CREATED).json(data);
       } else {
         return res
@@ -31,7 +38,7 @@ module.exports = async (app) => {
     }
   });
 
-  app.get('/api/posts/:postId/comments',CommentsAuth, async (req, res, next) => {
+  app.get('/api/comments/:postId/getComments',CommentsAuth, async (req, res, next) => {
     try {
       console.log(req.user);
       const postId = req.params.postId;
@@ -52,7 +59,7 @@ module.exports = async (app) => {
     }
   });
 
-  app.put('/api/posts/editComment/',CommentsAuth, async (req, res, next) => {
+  app.put('/api/comments/editComment/',CommentsAuth, async (req, res, next) => {
     try {
       const {commentId} = req.body;
       const {commentText} = req.body;
@@ -62,6 +69,11 @@ module.exports = async (app) => {
         commentId, commentText
       });
       if (data) {
+        PublishMessage(
+          channel,
+          POST_BINDING_KEY,
+          JSON.stringify({ event: "COMMENT_UPDATED", data: { ...data } })
+        );
         return res.status(STATUS_CODES.OK).json(data);
       } else {
         return res
@@ -72,4 +84,20 @@ module.exports = async (app) => {
       throw error;
     }
   });
+
+  app.delete('/api/comments/:commentId/deleteComment',CommentsAuth, async (req,res) => {
+    try {
+      console.log(req.user);
+      const commentId = req.params.commentId;
+      console.log(commentId);
+      const deletedComment = await commentsController.deletedComment({ commentId });
+      if(deletedComment){
+        return res.status(STATUS_CODES.OK).json({ deletedComment });
+      }else{
+        return res.status(STATUS_CODES.BAD_REQUEST).json({error: "Something went wrong"});
+      }
+    } catch (error) {
+      return error.message;
+    }
+  })
 };

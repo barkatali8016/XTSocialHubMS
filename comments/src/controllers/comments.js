@@ -16,11 +16,12 @@ class CommentsController {
         commentText, 
         authorName 
       });
+      console.log("createdComment object "+createdComment);
       if (!createdComment) {
         return {};
       }
       console.log(createdComment);
-      return FormatData({ id: createdComment._id });
+      return FormatData({ id: createdComment._id , commentText: createdComment.commentText, authorName: createdComment.authorName, createdAt: createdComment.createdAt});
     } catch (error) {
       throw error;
     }
@@ -49,6 +50,19 @@ class CommentsController {
       return FormatData({ editedComment });
     } catch (error) {
       throw error;
+    }
+  }
+
+  async deletedComment({ commentId }){
+    try {
+      const deletedComment = await this.repository.DeletedComment({ commentId });
+      if(!deletedComment){
+        return {};
+      };
+      console.log(deletedComment);
+      return FormatData({ deletedComment });
+    } catch (error) {
+      return error.message;
     }
   }
 }
