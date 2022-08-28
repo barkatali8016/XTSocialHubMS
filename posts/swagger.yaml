@@ -11,17 +11,16 @@ servers:
 paths:
   /:
     get:
-      summary: Returns a list of posts.
-      description: This URL will return the list of posts present in the database.
+      summary: Returns a string that confirms that the endpoint is up and running.
+      description: This is a health check endpoint.
       responses:
         '200':    # status code
-          description: Just a health check of the URL
+          description: Just a health check of this endpoint.
           content:
             application/json:
               schema: 
                 type: string
-                items: 
-                  type: string
+
   /api/post/list:
     get:
       summary: Returns a list of posts.
@@ -34,20 +33,32 @@ paths:
               schema: 
                 type: array
                 items: 
-                  type: string
-  /api/post/list:
+                  content: string
+                  imageURL: string
+                  userInformation: object
+                  interactionCount: object
+                  approxReadingTime: number
+                  schedule: object
+                  isAudited: boolean
+  /api/post/{postId}:
     get:
-      summary: Returns a list of posts.
-      description: This URL will return the list of posts present in the database.
+      summary: Returns a post by Id.
+      description: This URL will return the individual post for the id provided.
       responses:
         '200':    # status code
-          description: A JSON array of user names
+          description: A JSON object of post
           content:
             application/json:
               schema: 
-                type: array
+                type: object
                 items: 
-                  type: string
+                  content: string
+                  imageURL: string
+                  userInformation: object
+                  interactionCount: object
+                  approxReadingTime: number
+                  schedule: object
+                  isAudited: boolean
   /api/post/list:
     get:
       summary: Returns a list of posts.
