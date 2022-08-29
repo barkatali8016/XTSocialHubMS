@@ -12,7 +12,7 @@ const UserSchema = new Schema(
     // salt: String,
     phone: { type: String, require: true },
     address: { type: String, require: false },
-    posts: [{ type: Schema.Types.ObjectId, ref: "posts", require: true }],
+    // posts: [{ type: Schema.Types.ObjectId, ref: "posts", require: true }],
     isDeleted: { type: Boolean, default: false },
   },
   {
@@ -27,4 +27,4 @@ const UserSchema = new Schema(
   }
 );
 
-module.exports = mongoose.model("user", UserSchema);
+module.exports = mongoose.model("users", UserSchema);
