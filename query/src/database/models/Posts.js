@@ -27,5 +27,5 @@ const postsSchema = new Schema(
   }
 );
 
-const postDBModel = model("post", postsSchema);
+const postDBModel = model("posts", postsSchema);
 module.exports = postDBModel;

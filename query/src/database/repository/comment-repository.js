@@ -1,4 +1,4 @@
-const { CommentModel } = require("../models");
+const { CommentModel, PostModel } = require("../models");
 const {
   APIError,
   BadRequestError,
@@ -11,6 +11,10 @@ class CommentRepository {
     try {
       const comment = new CommentModel(commentInputs);
       const commentResult = await comment.save();
+      await PostModel.findOneAndUpdate(
+        { _id: commentInputs.postId },
+        { $push: { comments: commentResult._id } }
+      );
       return commentResult;
     } catch (err) {
       throw err;

@@ -17,18 +17,24 @@ class PostRepository {
     }
   }
 
-  // async FindUser({ email }) {
-  //   try {
-  //     const user = await UserModel.findOne({ email });
-  //     return user;
-  //   } catch (error) {
-  //     throw new APIError(
-  //       "API Error",
-  //       STATUS_CODES.INTERNAL_ERROR,
-  //       "Unable to Create Customer"
-  //     );
-  //   }
-  // }
+  async GetAllPosts() {
+    try {
+      const allPosts = await PostModel.find()
+        .populate("userId")
+        .populate({
+          path: "comments",
+          model: "comments",
+          populate: {
+            path: "userId",
+            model: "users",
+          },
+        });
+
+      return allPosts;
+    } catch (error) {
+      throw error;
+    }
+  }
   // async FindUserById({ _id }) {
   //   try {
   //     const user = await UserModel.findOne({ _id });

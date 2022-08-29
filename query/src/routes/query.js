@@ -13,14 +13,14 @@ module.exports = async (app, channel) => {
   //SIGN UP ROUTES
   app.get("/fetch/posts", async (req, res, next) => {
     try {
-      // const { data } = await queryController.SignUp();
-      // if (data) {
-      //   return res.status(STATUS_CODES.USER_CREATED).json(data);
-      // } else {
-      return res
-        .status(STATUS_CODES.BAD_REQUEST)
-        .json({ error: "Email already exist." });
-      // }
+      const data = await queryController.getAllPosts();
+      if (data) {
+        return res.status(STATUS_CODES.USER_CREATED).json(data);
+      } else {
+        return res
+          .status(STATUS_CODES.BAD_REQUEST)
+          .json({ error: "Something went wrong." });
+      }
     } catch (error) {
       next(error);
     }
