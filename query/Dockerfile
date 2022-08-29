@@ -1,5 +1,6 @@
 FROM node:alpine
-WORKDIR /users/src/app
+WORKDIR /query/src/app
+RUN npm install --global nodemon
 COPY package*.json .
 RUN npm ci
 COPY . .

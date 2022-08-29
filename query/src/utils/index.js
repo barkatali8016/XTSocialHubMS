@@ -4,7 +4,7 @@ const amqplib = require("amqplib");
 const {
   APP_SECRET,
   MOJO_API_KEY,
-  USER_BINDING_KEY,
+  XTSOCIAL_BINDING_KEY,
   EXCHANGE_NAME,
   MESSAGE_BROKER_URL,
   QUEUE_NAME,
@@ -91,7 +91,7 @@ module.exports.CreateChannel = async () => {
 module.exports.SubscribeMessage = async (channel, service) => {
   try {
     const appQueue = await channel.assertQueue(QUEUE_NAME);
-    channel.bindQueue(appQueue.queue, EXCHANGE_NAME, USER_BINDING_KEY);
+    channel.bindQueue(appQueue.queue, EXCHANGE_NAME, XTSOCIAL_BINDING_KEY);
     channel.consume(appQueue.queue, (data) => {
       console.log("RECEIVED DATA");
       console.log(data.content.toString());

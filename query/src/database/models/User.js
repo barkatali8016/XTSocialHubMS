@@ -4,42 +4,16 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
   {
+    _id: Schema.Types.ObjectId,
     firstname: { type: String, require: true },
     lastname: { type: String, require: true },
     email: { type: String, require: true },
-    password: { type: String, require: true },
-    salt: String,
+    // password: { type: String, require: true },
+    // salt: String,
     phone: { type: String, require: true },
     address: { type: String, require: false },
-    // cart: [
-    //     {
-    //         product: {
-    //             _id: { type: String, require: true},
-    //             name: { type: String},
-    //             banner: { type: String},
-    //             price: { type: Number}
-    //         },
-    //         unit: { type: Number, require: true}
-    //     }
-    // ],
-    // wishlist:[
-    //     {
-    //         _id: { type: String, require: true},
-    //         name: { type: String},
-    //         description: {type: String},
-    //         banner: { type: String},
-    //         available: {type: Boolean},
-    //         price: { type: Number}
-    //     }
-    // ],
-    // orders: [
-    //     {
-    //         _id: { type: String, require: true},
-    //         amount: { type: String},
-    //         date: {type: Date, default: Date.now()}
-
-    //     }
-    // ]
+    posts: [{ type: Schema.Types.ObjectId, ref: "posts", require: true }],
+    isDeleted: { type: Boolean, default: false },
   },
   {
     toJSON: {

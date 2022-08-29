@@ -8,7 +8,7 @@ module.exports = async () => {
     });
     console.log("DB CONNECTED!!");
   } catch (error) {
-    console.log("======DB CONNECTION ERROR======");
+    console.log("ERROR======DB CONNECTION ERROR======");
     console.log(error);
     process.exit(1);
   }

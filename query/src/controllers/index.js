@@ -1,3 +1,3 @@
 module.exports = {
-  UserController: require("./user"),
+  QueryController: require("./query"),
 };
