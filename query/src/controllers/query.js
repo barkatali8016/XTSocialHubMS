@@ -40,6 +40,14 @@ class UserController {
       throw error;
     }
   }
+  
+  async getAllPosts(){
+    try {
+      return await this.postRepository.GetAllPosts();
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async SubscribeEvents(payload) {
     const { event, data } = JSON.parse(payload);
