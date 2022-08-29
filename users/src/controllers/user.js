@@ -36,7 +36,7 @@ class UserController {
         return {};
       }
 
-      return FormateData({ id: createdUser._id });
+      return FormateData({ user: createdUser });
     } catch (error) {
       throw new APIError("Data Not found", error);
     }
