@@ -18,4 +18,8 @@ export class PostController {
   public async getIndividualPost(userId: string) {
     return this.repository.getIndividualPost(userId);
   }
+
+  public async deleteIndividualPost(postId: string) {
+    return this.repository.deleteIndividualPost(postId);
+  }
 }

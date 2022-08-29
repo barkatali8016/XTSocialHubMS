@@ -4,7 +4,14 @@ import { configuration } from "../config";
 const { APP_SECRET, EXCHANGE_NAME } = configuration;
 const MESSAGE_BROKER_URL: any = configuration.MESSAGE_BROKER_URL;
 
-export { multerInstance } from "./imageStorage";
+// Returns the time in minutes
+export const CalculateReadingTime = (content: string): number => {
+  const wpm = 225;
+  const words = content.trim().split(/\s+/).length;
+  const time = Math.ceil(words / wpm);
+  return time
+};
+
 export const ValidateSignature = async (req: any) => {
   const signature = req.get("Authorization");
 

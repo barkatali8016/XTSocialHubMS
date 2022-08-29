@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 
 const CommentsSchema = new Schema(
   {
-    postId: { type: String},
+    postId: { type: Schema.Types.ObjectId },
     commentText: { type: String, require: true },
-    authorName: { type: String, require: true },
+    userId: { type: Schema.Types.ObjectId },
   },
   {
     timestamps: true,

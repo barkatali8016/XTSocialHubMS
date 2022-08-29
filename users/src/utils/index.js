@@ -79,13 +79,13 @@ module.exports.CreateChannel = async () => {
 };
 
 // FOR USER WE DONT NEED => publish message
-// module.exports.PublishMessage = async (channel, binding_key, message) => {
-//   try {
-//     await channel.publish(EXCHANGE_NAME, binding_key, Buffer.from(message));
-//   } catch (error) {
-//     throw error;
-//   }
-// };
+module.exports.PublishMessage = async (channel, binding_key, message) => {
+  try {
+    await channel.publish(EXCHANGE_NAME, binding_key, Buffer.from(message));
+  } catch (error) {
+    throw error;
+  }
+};
 
 // subscribe message
 module.exports.SubscribeMessage = async (channel, service) => {

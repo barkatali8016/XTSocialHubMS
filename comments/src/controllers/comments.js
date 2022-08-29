@@ -1,25 +1,23 @@
 const { CommentsRepository } = require("../database");
 
-const {
-  FormatData,
-  APIError
-} = require("../utils");
+const { FormatData, APIError } = require("../utils");
 
 class CommentsController {
   constructor() {
     this.repository = new CommentsRepository();
   }
 
-  async comment({ postId, commentText, authorName }) {
+  async comment({ postId, commentText, userId }) {
     try {
-      const createdComment = await this.repository.CreateComments({ postId, 
-        commentText, 
-        authorName 
+      const createdComment = await this.repository.CreateComments({
+        postId,
+        commentText,
+        userId,
       });
       if (!createdComment) {
         return {};
       }
-      return FormatData({ id: createdComment._id , commentText: createdComment.commentText, authorName: createdComment.authorName, createdAt: createdComment.createdAt});
+      return FormatData(createdComment);
     } catch (error) {
       throw error;
     }
@@ -38,25 +36,30 @@ class CommentsController {
     }
   }
 
-  async editComment(commentId, comment) {
+  async editComment(commentId, commentText) {
     try {
-      const editedComment = await this.repository.EditComment(commentId, comment);
+      const editedComment = await this.repository.EditComment(
+        commentId,
+        commentText
+      );
       if (!editedComment) {
         return {};
       }
-      return FormatData({ id: editedComment._id , commentText: editedComment.commentText, authorName: editedComment.authorName, updatedAt: editedComment.updatedAt});
+      return FormatData(editedComment);
     } catch (error) {
       throw error;
     }
   }
 
-  async deletedComment({ commentId }){
+  async deletedComment({ commentId }) {
     try {
-      const deletedComment = await this.repository.DeletedComment({ commentId });
-      if(!deletedComment){
+      const deletedComment = await this.repository.DeletedComment({
+        commentId,
+      });
+      if (!deletedComment) {
         return {};
-      };
-      return FormatData({ id: deletedComment._id , commentText: deletedComment.commentText, authorName: deletedComment.authorName, createdAt:deletedComment.createdAt, updatedAt: deletedComment.updatedAt});
+      }
+      return FormatData({ deletedComment });
     } catch (error) {
       return error.message;
     }

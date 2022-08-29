@@ -1,5 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node
 
+.DS_Store
+
 ### Node ###
 # Logs
 logs
@@ -61,8 +63,8 @@ jspm_packages/
 # .env.test.local
 # .env.production.local
 # .env.local
-.env
-.env.dev
+# .env
+# .env.dev
 
 # vuepress v2.x temp and cache directory
 .temp

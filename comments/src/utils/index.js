@@ -5,17 +5,16 @@ const amqplib = require("amqplib");
 
 //Utility functions
 
+module.exports.ValidateSignature = async (req) => {
+  const signature = req.get("Authorization");
+  if (signature) {
+    const payload = await jwt.verify(signature.split(" ")[1], APP_SECRET);
+    req.user = payload;
+    return true;
+  }
 
-  module.exports.ValidateSignature = async (req) => {
-    const signature = req.get("Authorization");
-    if (signature) {
-      const payload = await jwt.verify(signature.split(" ")[1], APP_SECRET);
-      req.user = payload;
-      return true;
-    }
-
-    return false;
-  };
+  return false;
+};
 
 module.exports.FormatData = (data) => {
   if (data) {
@@ -40,11 +39,7 @@ module.exports.CreateChannel = async () => {
 };
 
 // publish message
-module.exports.PublishMessage = async (
-  channel,
-  binding_key,
-  message
-) => {
+module.exports.PublishMessage = async (channel, binding_key, message) => {
   try {
     console.log("message from PublishMessage  ===---=== "+message);
     await channel.publish(EXCHANGE_NAME, binding_key, Buffer.from(message));
