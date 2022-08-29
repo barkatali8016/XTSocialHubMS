@@ -82,9 +82,14 @@ module.exports = async (app, channel) => {
   app.delete('/api/comments/:commentId/deleteComment',CommentsAuth, async (req,res) => {
     try {
       const commentId = req.params.commentId;
-      const deletedComment = await commentsController.deletedComment({ commentId });
-      if(deletedComment){
-        return res.status(STATUS_CODES.OK).json({ deletedComment });
+      const {data} = await commentsController.deletedComment({ commentId });
+      if(data){
+        PublishMessage(
+          channel,
+          POST_BINDING_KEY,
+          JSON.stringify({ event: "COMMENT_DELETED", data: { ...data } })
+        );
+        return res.status(STATUS_CODES.OK).json(data);
       }else{
         return res.status(STATUS_CODES.BAD_REQUEST).json({error: "Something went wrong"});
       }

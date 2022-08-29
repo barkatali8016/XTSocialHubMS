@@ -44,8 +44,7 @@ class CommentsController {
       if (!editedComment) {
         return {};
       }
-      console.log("comment controller ...-=--=-=-==-=-=-"+comment);
-      return FormatData({ editedComment });
+      return FormatData({ id: editedComment._id , commentText: editedComment.commentText, authorName: editedComment.authorName, updatedAt: editedComment.updatedAt});
     } catch (error) {
       throw error;
     }
@@ -57,7 +56,7 @@ class CommentsController {
       if(!deletedComment){
         return {};
       };
-      return FormatData({ deletedComment });
+      return FormatData({ id: deletedComment._id , commentText: deletedComment.commentText, authorName: deletedComment.authorName, createdAt:deletedComment.createdAt, updatedAt: deletedComment.updatedAt});
     } catch (error) {
       return error.message;
     }

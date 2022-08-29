@@ -46,7 +46,7 @@ module.exports.PublishMessage = async (
   message
 ) => {
   try {
-    console.log("message from PublishMessage  --- "+message);
+    console.log("message from PublishMessage  ===---=== "+message);
     await channel.publish(EXCHANGE_NAME, binding_key, Buffer.from(message));
   } catch (error) {
     throw error;
