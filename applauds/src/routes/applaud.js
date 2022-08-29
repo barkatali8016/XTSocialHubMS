@@ -5,6 +5,7 @@ const {
 } = require('../utils/validators');
 const { STATUS_CODES } = require('../utils/app-errors');
 const { EMOJI_LIST, APPLAUD_BINDING_KEY } = require('../config');
+const { PublishMessage } = require('../utils');
 
 module.exports = async (app, channel) => {
   const applaudController = new ApplaudController();
