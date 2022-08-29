@@ -29,7 +29,6 @@ class CommentsRepository {
       if (!postId) {
         return null;
       }
-      // const comment = new CommentsModel();
       const commentResult = await CommentsModel.find({"postId":postId});
       return commentResult;
     } catch (err) {
@@ -37,16 +36,31 @@ class CommentsRepository {
     }
   }
 
-  async EditComment({commentId, comment}) {
+  async EditComment(commentId, comment) {
     try {
       if (!commentId) {
         return null;
       }
-      // const comment = new CommentsModel();
-      const editedComment = await CommentsModel.findByIdAndUpdate(commentId, {"commentText":comment});
+      const editedComment = await CommentsModel.findByIdAndUpdate({_id: commentId }, {commentText:comment},{returnOriginal: false});
       return editedComment;
     } catch (err) {
       throw err;
+    }
+  }
+
+  async DeletedComment({ commentId }){
+    try {
+      if(!commentId){
+        return null;
+      };
+      const deletedComment = await CommentsModel.findOneAndDelete({_id: commentId });
+      if(deletedComment){
+        return deletedComment
+      }else{
+        throw new Error("Comment Id is invalid")
+      }
+    } catch (error) {
+      return error.message;
     }
   }
 }
