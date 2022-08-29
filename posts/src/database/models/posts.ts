@@ -4,6 +4,7 @@ const postsSchema = new Schema(
   {
     content: { type: String },
     imageURL: { type: String },
+    postTitle: { type: String },
     userInformation: {
       firstName: { type: String },
       lastName: { type: String },
