@@ -87,4 +87,19 @@ module.exports = async (app, channel) => {
       next(error);
     }
   });
+  app.get('/api/applaud/:postId', async (req, res, next) => {
+    try {
+      console.log(req.params.postId);
+      const data = await applaudController.getApplaud(req.params.postId);
+      if (data) {
+        return res.status(STATUS_CODES.APPLAUD_DELETED).json(data);
+      } else {
+        return res
+          .status(STATUS_CODES.NOT_FOUND)
+          .json({ error: 'Applaud not found' });
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
 };

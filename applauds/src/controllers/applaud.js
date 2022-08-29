@@ -1,6 +1,6 @@
 const { ApplaudRepository } = require('../database');
 const { FormatData } = require('../utils');
-const { APIError } = require('../utils/app-errors');
+const { APIError, STATUS_CODES } = require('../utils/app-errors');
 
 class ApplaudController {
   constructor() {
@@ -44,6 +44,22 @@ class ApplaudController {
         return {};
       }
       return FormatData({ id: deletedApplaud._id });
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getApplaud(id) {
+    try {
+      console.log('con', id);
+      const getApplaud = await this.repository.getApplaud(id);
+      if (getApplaud.length == 0) {
+        throw new APIError(
+          'Data Not found',
+          STATUS_CODES.NOT_FOUND,
+          'data not found'
+        );
+      }
+      return getApplaud;
     } catch (error) {
       throw error;
     }

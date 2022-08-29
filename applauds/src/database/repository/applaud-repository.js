@@ -66,6 +66,20 @@ class ApplaudRepository {
       );
     }
   }
+  async getApplaud(id) {
+    try {
+      console.log("rep",id);
+      const data = await ApplaudModel.find({postId:id});
+      console.log('data', data);
+      return data;
+    } catch (error) {
+      throw new APIError(
+        'API Error',
+        STATUS_CODES.INTERNAL_ERROR,
+        'Unable to Delete Applaud'
+      );
+    }
+  }
 }
 
 module.exports = ApplaudRepository;
