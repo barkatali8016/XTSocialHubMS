@@ -10,11 +10,8 @@ module.exports = async (app, channel) => {
   // ADD COMMENT
   app.post('/api/comments/:postId/addComment',CommentsAuth, async (req, res, next) => {
     try {
-      console.log(req.body, req.user);
       const postId = req.params.postId;
-      // const commentId = randomBytes(4).toString("hex");
       const { commentText, authorName } = req.body;
-      console.log(postId, commentText, authorName );
 
       const { data } = await commentsController.comment({
         postId, 
@@ -40,9 +37,7 @@ module.exports = async (app, channel) => {
 
   app.get('/api/comments/:postId/getComments',CommentsAuth, async (req, res, next) => {
     try {
-      console.log(req.user);
       const postId = req.params.postId;
-      console.log(postId );
 
       const { data } = await commentsController.getComments({
         postId
@@ -59,15 +54,14 @@ module.exports = async (app, channel) => {
     }
   });
 
-  app.put('/api/comments/editComment/',CommentsAuth, async (req, res, next) => {
+  app.put('/api/comments/:commentId/editComment/',CommentsAuth, async (req, res, next) => {
     try {
-      const {commentId} = req.body;
+      const commentId = req.params.commentId;
       const {commentText} = req.body;
-      console.log("commenttextnId",commentText, commentId );
 
-      const { data } = await commentsController.editComment({
+      const { data } = await commentsController.editComment(
         commentId, commentText
-      });
+      );
       if (data) {
         PublishMessage(
           channel,
@@ -87,9 +81,7 @@ module.exports = async (app, channel) => {
 
   app.delete('/api/comments/:commentId/deleteComment',CommentsAuth, async (req,res) => {
     try {
-      console.log(req.user);
       const commentId = req.params.commentId;
-      console.log(commentId);
       const deletedComment = await commentsController.deletedComment({ commentId });
       if(deletedComment){
         return res.status(STATUS_CODES.OK).json({ deletedComment });

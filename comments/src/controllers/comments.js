@@ -16,11 +16,9 @@ class CommentsController {
         commentText, 
         authorName 
       });
-      console.log("createdComment object "+createdComment);
       if (!createdComment) {
         return {};
       }
-      console.log(createdComment);
       return FormatData({ id: createdComment._id , commentText: createdComment.commentText, authorName: createdComment.authorName, createdAt: createdComment.createdAt});
     } catch (error) {
       throw error;
@@ -40,13 +38,13 @@ class CommentsController {
     }
   }
 
-  async editComment({commentId, comment }) {
+  async editComment(commentId, comment) {
     try {
-      const editedComment = await this.repository.EditComment({ commentId, comment });
+      const editedComment = await this.repository.EditComment(commentId, comment);
       if (!editedComment) {
         return {};
       }
-      console.log(editedComment);
+      console.log("comment controller ...-=--=-=-==-=-=-"+comment);
       return FormatData({ editedComment });
     } catch (error) {
       throw error;
@@ -59,7 +57,6 @@ class CommentsController {
       if(!deletedComment){
         return {};
       };
-      console.log(deletedComment);
       return FormatData({ deletedComment });
     } catch (error) {
       return error.message;

@@ -10,7 +10,6 @@ const amqplib = require("amqplib");
     const signature = req.get("Authorization");
     if (signature) {
       const payload = await jwt.verify(signature.split(" ")[1], APP_SECRET);
-      console.log(payload, "payloadpayloadpayload");
       req.user = payload;
       return true;
     }
