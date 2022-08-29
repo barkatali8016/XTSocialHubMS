@@ -10,6 +10,7 @@ const { PublishMessage } = require('../utils');
 module.exports = async (app, channel) => {
   const applaudController = new ApplaudController();
 
+  //for creating applaud details in db
   app.post('/api/applaud', async (req, res, next) => {
     try {
       console.log(req.body);
@@ -44,6 +45,7 @@ module.exports = async (app, channel) => {
     }
   });
 
+  //for creating applaud details in db based on applaudId
   app.put('/api/applaud', async (req, res, next) => {
     try {
       console.log(req.body);
@@ -74,6 +76,7 @@ module.exports = async (app, channel) => {
     }
   });
 
+  //for deleting applaud details based on applaud id
   app.delete('/api/applaud/:id', async (req, res, next) => {
     try {
       const { data } = await applaudController.deleteApplaud(req.params.id);
@@ -88,6 +91,8 @@ module.exports = async (app, channel) => {
       next(error);
     }
   });
+
+  //for fetching applaud details based on postId
   app.get('/api/applaud/:postId', async (req, res, next) => {
     try {
       console.log(req.params.postId);
