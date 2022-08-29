@@ -4,13 +4,13 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "start": "NODE_ENV=dev nodemon dist/index.js",
+    "start": "NODE_ENV=dev nodemon --legacy-watch dist/index.js",
     "start:node": "NODE_ENV=dev node dist/index.js",
     "prod": "npm run build && NODE_ENV=prod nodemon dist/src/index.js",
     "build": "npx tsc",
     "lint": "eslint .",
     "dev": "npm run build && npm run start:node",
-    "start:nodemon": "NODE_ENV=dev nodemon"
+    "start:nodemon": "NODE_ENV=dev nodemon --legacy-watch"
   },
   "keywords": [],
   "author": "",
