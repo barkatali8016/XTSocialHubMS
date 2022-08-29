@@ -10,10 +10,7 @@ const { XTSOCIAL_BINDING_KEY } = configuration;
 
 export const postRoutes = async (app: Express, channel: any) => {
   const postController = new PostController();
-  app.post(
-    "/api/post/create",
-    PostsAuth,
-    async (req: any, res: any, next: any) => {
+  app.post("/api/post/create", PostsAuth, async (req: any, res: any, next: any) => {
       try {
         const { content } = req.body;
         const readingTime = CalculateReadingTime(content);
