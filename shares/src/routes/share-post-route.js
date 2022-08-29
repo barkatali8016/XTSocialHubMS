@@ -2,10 +2,13 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
 var router = express.Router();
-const { STATUS_CODES } = require("../utils/app-errors");
+const { STATUS_CODES } = require('../utils/app-errors');
 const { validateSharePostBody } = require('../utils/validators');
 const { SharePostController } = require('../controllers');
 const sharePostController = new SharePostController();
+const { PublishMessage } = require('../utils');
+const { POST_BINDING_KEY } = require('../config');
+const { SharePostModel } = require('../database/models');
 
 /* Share a post. */
 router.put('/post/:postId/share', jsonParser, async (req, res, next) => {
@@ -23,6 +26,12 @@ router.put('/post/:postId/share', jsonParser, async (req, res, next) => {
       userId,
     });
     if (data) {
+    const shareDetails = await SharePostModel.findOne({ postId });
+      PublishMessage(
+        req.channel,
+        POST_BINDING_KEY,
+        JSON.stringify({ event: "POST_SHARED", data: { ...data, postId, shareCount: shareDetails.shareCount } })
+      );
       return res.status(STATUS_CODES.OK).json("Post shared successfully.");
     } else {
       return res

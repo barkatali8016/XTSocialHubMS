@@ -4,11 +4,7 @@ const postsSchema = new Schema(
   {
     content: { type: String },
     imageURL: { type: String },
-    userInformation: {
-      firstName: { type: String },
-      lastName: { type: String },
-      userId: { type: String },
-    },
+    userId: { type: Schema.Types.ObjectId },
     interactionCount: { type: Object },
     approxReadingTime: { type: Number, require: true },
     schedule: { type: Object },

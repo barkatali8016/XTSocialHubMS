@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=dev nodemon src/index.js",
-    "prod": "NODE_ENV=prod nodemon src/index.js"
+    "start": "NODE_ENV=dev nodemon --legacy-watch src/index.js",
+    "prod": "NODE_ENV=prod nodemon --legacy-watch src/index.js"
   },
   "keywords": [],
   "author": "",
