@@ -6,27 +6,35 @@ import { configuration } from "../config";
 import { multerInstance, PostsAuth } from "./middlewares";
 import { MulterError } from "multer";
 
-const { USER_BINDING_KEY } = configuration;
+const { XTSOCIAL_BINDING_KEY } = configuration;
 
 export const postRoutes = async (app: Express, channel: any) => {
   const postController = new PostController();
-  app.post("/api/post/create", PostsAuth, async (req, res, next) => {
-    try {
-      const { content } = req.body;
-      const readingTime = CalculateReadingTime(content);
-      req.body.readingTime = readingTime;
-      const result = await postController.createNewPost(req.body);
-      PublishMessage(
-        channel,
-        USER_BINDING_KEY,
-        JSON.stringify({ event: "POST_ADDED", data: { ...result } })
-      );
-      res.status(STATUS_CODES.OK).send(result);
-    } catch (error) {
-      console.log(error);
-      next(error);
+  app.post(
+    "/api/post/create",
+    PostsAuth,
+    async (req: any, res: any, next: any) => {
+      try {
+        const { content } = req.body;
+        const readingTime = CalculateReadingTime(content);
+        req.body.readingTime = readingTime;
+        const { _id } = req.user;
+        req.body.userId = _id;
+        const result = await postController.createNewPost(req.body);
+        // console.log(result, "=================+");
+        PublishMessage(
+          channel,
+          XTSOCIAL_BINDING_KEY,
+          JSON.stringify({ event: "POST_CREATED", data: result })
+        );
+        res.statusCode = 201;
+        res.send(result);
+      } catch (error) {
+        console.log(error);
+        next(error);
+      }
     }
-  });
+  );
 
   app.get("/api/post/list", PostsAuth, async (_, res, next) => {
     try {
@@ -74,7 +82,7 @@ export const postRoutes = async (app: Express, channel: any) => {
   });
 
   // THis is just a __private link__ for now for deleting the post
-  app.delete('/api/post/:id', PostsAuth, async (req, res, next) => {
+  app.delete("/api/post/:id", PostsAuth, async (req, res, next) => {
     try {
       if (!req.params.id) {
         return res.status(STATUS_CODES.BAD_REQUEST).json({
@@ -85,7 +93,7 @@ export const postRoutes = async (app: Express, channel: any) => {
       res.status(STATUS_CODES.OK).send(result);
     } catch (error) {
       console.log(error);
-      next(error)
+      next(error);
     }
   });
 };

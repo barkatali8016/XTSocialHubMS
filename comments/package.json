@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=dev nodemon src/index.js",
-    "prod": "NODE_ENV=prod nodemon src/index.js"
+    "start": "NODE_ENV=dev nodemon --legacy-watch src/index.js",
+    "prod": "NODE_ENV=prod nodemon --legacy-watch src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.10.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",

@@ -70,6 +70,39 @@ services:
       - mongo_db
       - rabbitmq
 
+  #Node users API service
+  query:
+    build:
+      context: ./query
+      dockerfile: Dockerfile
+    container_name: query
+    restart: always
+    ports:
+      - 4000:4000
+    volumes:
+      - ./query:/query/src/app/
+    env_file: query/.env.dev
+    depends_on:
+      - waitforrabbit
+      - mongo_db
+      - rabbitmq
+
+  #Node comments API service
+  comments:
+    build:
+      context: ./comments
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8002:8002
+    volumes:
+      - ./comments:/comments/src/app/
+    env_file: query/.env.dev
+    depends_on:
+      - waitforrabbit
+      - mongo_db
+      - rabbitmq
+
   #Node shares API service
   shares:
     build: 
@@ -78,7 +111,7 @@ services:
     container_name: shares
     restart: always
     ports:
-      - 8002:8002
+      - 8003:8002
     volumes:
       - ./shares:/shares/src/app 
     environment:

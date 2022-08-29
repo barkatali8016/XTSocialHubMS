@@ -6,10 +6,10 @@ const {
 } = require("../utils/validators");
 const UserAuth = require("./middlewares/auth");
 const { STATUS_CODES } = require("../utils/app-errors");
-const { SubscribeMessage } = require("../utils");
+const { PublishMessage } = require("../utils");
+const { XTSOCIAL_BINDING_KEY } = require("../config");
 module.exports = async (app, channel) => {
   const userController = new UserController();
-  await SubscribeMessage(channel, userController);
   //SIGN UP ROUTES
   app.post("/signup", async (req, res, next) => {
     try {
@@ -29,6 +29,11 @@ module.exports = async (app, channel) => {
         phone,
       });
       if (data) {
+        PublishMessage(
+          channel,
+          XTSOCIAL_BINDING_KEY,
+          JSON.stringify({ event: "USER_CREATED", data: { ...data } })
+        );
         return res.status(STATUS_CODES.USER_CREATED).json(data);
       } else {
         return res
@@ -36,7 +41,8 @@ module.exports = async (app, channel) => {
           .json({ error: "Email already exist." });
       }
     } catch (error) {
-      next(error);
+      // next(error);
+      throw error;
     }
   });
 

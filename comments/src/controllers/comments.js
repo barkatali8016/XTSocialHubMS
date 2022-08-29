@@ -1,26 +1,23 @@
 const { CommentsRepository } = require("../database");
 
-const {
-  FormatData,
-  APIError
-} = require("../utils");
+const { FormatData, APIError } = require("../utils");
 
 class CommentsController {
   constructor() {
     this.repository = new CommentsRepository();
   }
 
-  async comment({ postId, commentText, authorName }) {
+  async comment({ postId, commentText, userId }) {
     try {
-      const createdComment = await this.repository.CreateComments({ postId, 
-        commentText, 
-        authorName 
+      const createdComment = await this.repository.CreateComments({
+        postId,
+        commentText,
+        userId,
       });
       if (!createdComment) {
         return {};
       }
-      console.log(createdComment);
-      return FormatData({ id: createdComment._id });
+      return FormatData(createdComment);
     } catch (error) {
       throw error;
     }
@@ -39,16 +36,32 @@ class CommentsController {
     }
   }
 
-  async editComment({commentId, comment }) {
+  async editComment(commentId, commentText) {
     try {
-      const editedComment = await this.repository.EditComment({ commentId, comment });
+      const editedComment = await this.repository.EditComment(
+        commentId,
+        commentText
+      );
       if (!editedComment) {
         return {};
       }
-      console.log(editedComment);
-      return FormatData({ editedComment });
+      return FormatData(editedComment);
     } catch (error) {
       throw error;
+    }
+  }
+
+  async deletedComment({ commentId }) {
+    try {
+      const deletedComment = await this.repository.DeletedComment({
+        commentId,
+      });
+      if (!deletedComment) {
+        return {};
+      }
+      return FormatData({ deletedComment });
+    } catch (error) {
+      return error.message;
     }
   }
 }
