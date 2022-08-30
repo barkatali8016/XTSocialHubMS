@@ -25,9 +25,7 @@ class PostRepository {
     const endIndex = page * limit;
 
     const results = {};
-    const totalPosts = await PostModel.find({ userId })
-      .estimatedDocumentCount()
-      .exec();
+    const totalPosts = await PostModel.find().countDocuments().exec();
     results.totalPosts = totalPosts;
     if (endIndex < totalPosts) {
       results.next = {
@@ -50,6 +48,7 @@ class PostRepository {
         .populate({
           path: "comments",
           model: "comments",
+          match: { isDeleted: false },
           populate: {
             path: "userId",
             model: "users",
@@ -58,6 +57,7 @@ class PostRepository {
         .populate({
           path: "shares",
           model: "shares",
+          match: { isDeleted: false },
           populate: {
             path: "shareDetails.userId",
             model: "users",
@@ -66,6 +66,7 @@ class PostRepository {
         .populate({
           path: "applauds",
           model: "applauds",
+          match: { isDeleted: false },
           populate: {
             path: "userId",
             model: "users",
@@ -86,9 +87,7 @@ class PostRepository {
     const endIndex = page * limit;
 
     const results = {};
-    const totalPosts = await PostModel.find({ userId })
-      .estimatedDocumentCount()
-      .exec();
+    const totalPosts = await PostModel.find({ userId }).countDocuments().exec();
     results.totalPosts = totalPosts;
 
     if (endIndex < totalPosts) {
@@ -112,6 +111,7 @@ class PostRepository {
         .populate({
           path: "comments",
           model: "comments",
+          match: { isDeleted: false },
           populate: {
             path: "userId",
             model: "users",
@@ -120,6 +120,7 @@ class PostRepository {
         .populate({
           path: "shares",
           model: "shares",
+          match: { isDeleted: false },
           populate: {
             path: "shareDetails.userId",
             model: "users",
@@ -128,6 +129,7 @@ class PostRepository {
         .populate({
           path: "applauds",
           model: "applauds",
+          match: { isDeleted: false },
           populate: {
             path: "userId",
             model: "users",

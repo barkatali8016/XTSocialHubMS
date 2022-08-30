@@ -26,6 +26,26 @@ module.exports = async (app, channel) => {
       next(error);
     }
   });
+  app.get("/fetch/posts/current-user", UserAuth, async (req, res, next) => {
+    const userId = req.user._id;
+    try {
+      const { page = 1, limit = 10 } = req.query;
+      const data = await queryController.getAllPostsByUserId({
+        userId,
+        page,
+        limit,
+      });
+      if (data) {
+        return res.status(STATUS_CODES.USER_CREATED).json(data);
+      } else {
+        return res
+          .status(STATUS_CODES.BAD_REQUEST)
+          .json({ error: "Something went wrong." });
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
 
   app.get("/fetch/posts/:userId", async (req, res, next) => {
     try {
