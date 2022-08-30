@@ -25,8 +25,15 @@ class PostRepository {
         model: 'comments',
         populate: {
           path: 'userId',
-          model: 'users'
-        }
+          model: 'users',
+        },
+      }).populate({
+        path: 'shareId',
+        model: 'shares',
+          populate: {
+            path: 'shareDetails.userId',
+            model: 'users',
+          },
       });
 
       return allPosts;

@@ -15,6 +15,11 @@ const postsSchema = new Schema(
     schedule: { type: Object },
     isAudited: { type: Boolean, default: false },
     comments: [{ type: Schema.Types.ObjectId, ref: "comments", require: true }],
+    shareId: {
+      type: Schema.Types.ObjectId,
+      ref: "shares",
+      require: true,
+    },
     isDeleted: { type: Boolean, default: false },
   },
   {

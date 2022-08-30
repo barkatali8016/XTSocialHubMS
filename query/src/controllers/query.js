@@ -2,12 +2,14 @@ const {
   UserRepository,
   PostRepository,
   CommentRepository,
+  SharePostRepository,
 } = require("../database");
 class UserController {
   constructor() {
     this.userRepository = new UserRepository();
     this.postRepository = new PostRepository();
     this.commentRepository = new CommentRepository();
+    this.sharePostRepo = new SharePostRepository();
   }
   async createUser(userInputs) {
     try {
@@ -40,8 +42,16 @@ class UserController {
       throw error;
     }
   }
-  
-  async getAllPosts(){
+
+  async sharePost(shareInputs) {
+    try {
+      return await this.sharePostRepo.SharePost(shareInputs);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllPosts() {
     try {
       return await this.postRepository.GetAllPosts();
     } catch (error) {
@@ -78,6 +88,10 @@ class UserController {
       case "COMMENT_UPDATED":
         console.log(data, "EVENT in Controller");
         this.updateComment(data);
+        break;
+      case "POST_SHARED":
+        console.log(data, "EVENT in Controller SHARES");
+        this.sharePost(data);
         break;
       default:
         break;
