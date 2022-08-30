@@ -41,9 +41,21 @@ class UserController {
     }
   }
 
-  async getAllPosts() {
+  async getAllPosts({ page, limit }) {
     try {
-      return await this.postRepository.GetAllPosts();
+      return await this.postRepository.GetAllPosts({ page, limit });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllPostsByUserId({ userId, page, limit }) {
+    try {
+      return await this.postRepository.GetAllPostsByUserId({
+        userId,
+        page,
+        limit,
+      });
     } catch (error) {
       throw error;
     }

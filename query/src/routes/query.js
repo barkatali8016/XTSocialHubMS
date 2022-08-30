@@ -10,10 +10,32 @@ const { SubscribeMessage } = require("../utils");
 module.exports = async (app, channel) => {
   const queryController = new QueryController();
   await SubscribeMessage(channel, queryController);
-  //SIGN UP ROUTES
-  app.get("/fetch/posts", async (req, res, next) => {
+  //FETCH ALL POST ROUTES
+  app.get("/fetch/all-posts", async (req, res, next) => {
     try {
-      const data = await queryController.getAllPosts();
+      const { page = 1, limit = 10 } = req.query;
+      const data = await queryController.getAllPosts({ page, limit });
+      if (data) {
+        return res.status(STATUS_CODES.USER_CREATED).json(data);
+      } else {
+        return res
+          .status(STATUS_CODES.BAD_REQUEST)
+          .json({ error: "Something went wrong." });
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.get("/fetch/posts/:userId", async (req, res, next) => {
+    try {
+      const { userId } = req.params;
+      const { page = 1, limit = 10 } = req.query;
+      const data = await queryController.getAllPostsByUserId({
+        userId,
+        page,
+        limit,
+      });
       if (data) {
         return res.status(STATUS_CODES.USER_CREATED).json(data);
       } else {

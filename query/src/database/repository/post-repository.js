@@ -17,9 +17,35 @@ class PostRepository {
     }
   }
 
-  async GetAllPosts() {
+  async GetAllPosts(data) {
+    const page = parseInt(data.page);
+    const limit = parseInt(data.limit);
+    const userId = data.userId;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const results = {};
+    const totalPosts = await PostModel.find({ userId })
+      .estimatedDocumentCount()
+      .exec();
+    results.totalPosts = totalPosts;
+    if (endIndex < totalPosts) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
     try {
-      const allPosts = await PostModel.find()
+      results.posts = await PostModel.find()
+        .limit(limit)
+        .skip(startIndex)
         .populate("userId")
         .populate({
           path: "comments",
@@ -30,23 +56,57 @@ class PostRepository {
           },
         });
 
-      return allPosts;
+      return results;
     } catch (error) {
       throw error;
     }
   }
-  // async FindUserById({ _id }) {
-  //   try {
-  //     const user = await UserModel.findOne({ _id });
-  //     return user;
-  //   } catch (error) {
-  //     throw new APIError(
-  //       "API Error",
-  //       STATUS_CODES.INTERNAL_ERROR,
-  //       "Unable to Create Customer"
-  //     );
-  //   }
-  // }
+
+  async GetAllPostsByUserId(data) {
+    const page = parseInt(data.page);
+    const limit = parseInt(data.limit);
+    const userId = data.userId;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const results = {};
+    const totalPosts = await PostModel.find({ userId })
+      .estimatedDocumentCount()
+      .exec();
+    results.totalPosts = totalPosts;
+
+    if (endIndex < totalPosts) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+    try {
+      results.posts = await PostModel.find({ userId })
+        .limit(limit)
+        .skip(startIndex)
+        .populate("userId")
+        .populate({
+          path: "comments",
+          model: "comments",
+          populate: {
+            path: "userId",
+            model: "users",
+          },
+        })
+        .exec();
+      return results;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = PostRepository;
