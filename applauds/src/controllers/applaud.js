@@ -1,6 +1,6 @@
 const { ApplaudRepository } = require('../database');
 const { FormatData } = require('../utils');
-const { APIError } = require('../utils/app-errors');
+const { APIError, STATUS_CODES } = require('../utils/app-errors');
 
 class ApplaudController {
   constructor() {
@@ -13,25 +13,19 @@ class ApplaudController {
         userId,
         applaudKey,
       });
-      if (!createdApplaud) {
-        return {};
-      }
-      console.log(createdApplaud);
-      return FormatData({ id: createdApplaud._id });
+      return FormatData(createdApplaud);
     } catch (error) {
       throw error;
     }
   }
 
-  async updateApplaud({ applaudId, userId, applaudKey }) {
+  async updateApplaud({ applaudId, applaudKey }) {
     try {
       const updatedApplaud = await this.repository.updateApplaud({
         applaudId,
-        userId,
         applaudKey,
       });
-      console.log('here====');
-      return FormatData({ id: updatedApplaud._id });
+      return FormatData(updatedApplaud);
     } catch (error) {
       throw error;
     }
@@ -40,10 +34,22 @@ class ApplaudController {
   async deleteApplaud(id) {
     try {
       const deletedApplaud = await this.repository.deleteApplaud(id);
-      if (!deletedApplaud) {
-        return {};
+      return FormatData(deletedApplaud);
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getApplaud(id) {
+    try {
+      const getApplaud = await this.repository.getApplaud(id);
+      if (getApplaud.length == 0) {
+        throw new APIError(
+          'Data Not found',
+          STATUS_CODES.NOT_FOUND,
+          'data not found'
+        );
       }
-      return FormatData({ id: deletedApplaud._id });
+      return getApplaud;
     } catch (error) {
       throw error;
     }

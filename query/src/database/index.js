@@ -1,7 +1,8 @@
 module.exports = {
-  databaseConnection: require("./connection"),
-  UserRepository: require("./repository/user-repository"),
-  PostRepository: require("./repository/post-repository"),
-  CommentRepository: require("./repository/comment-repository"),
+  databaseConnection: require('./connection'),
+  UserRepository: require('./repository/user-repository'),
+  PostRepository: require('./repository/post-repository'),
+  CommentRepository: require('./repository/comment-repository'),
+  ApplaudRepository: require('./repository/applaud-repository'),
   SharePostRepository: require("./repository/share-post-repository"),
 };

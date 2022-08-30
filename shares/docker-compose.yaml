@@ -20,7 +20,7 @@ services:
     build: .
 
     ports:
-      - 8003:8003
+      - 8004:8004
 
     volumes:
       - .:/shares/src/app
@@ -31,7 +31,7 @@ services:
 
       MONGODB_URI: 'mongodb://mongo_db:27017/shares'
 
-      PORT: 8003
+      PORT: 8004
 
       MOJO_API_KEY: 'test-39c833cd-adc0-4787-8027-400b8551d49f'
       

@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const postsSchema = new Schema(
   {
@@ -7,7 +7,7 @@ const postsSchema = new Schema(
     imageURL: { type: String },
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "users",
+      ref: 'users',
       require: true,
     },
     interactionCount: { type: Object },
@@ -15,7 +15,8 @@ const postsSchema = new Schema(
     schedule: { type: Object },
     isAudited: { type: Boolean, default: false },
     comments: [{ type: Schema.Types.ObjectId, ref: "comments", require: true }],
-    shareId: {
+    applauds: [{ type: Schema.Types.ObjectId, ref: 'applauds', require: true }],
+    shares: {
       type: Schema.Types.ObjectId,
       ref: "shares",
       require: true,
@@ -32,5 +33,5 @@ const postsSchema = new Schema(
   }
 );
 
-const postDBModel = model("posts", postsSchema);
+const postDBModel = model('posts', postsSchema);
 module.exports = postDBModel;

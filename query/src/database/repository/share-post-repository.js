@@ -11,7 +11,7 @@ class SharePostRepository {
                 { upsert: true, new: true },
             );
             if (shareResult.shareCount === 1) {
-                await PostModel.findOneAndUpdate({ _id: shareResult.postId }, { $set: { shareId: shareResult._id }, });
+                await PostModel.findOneAndUpdate({ _id: shareResult.postId }, { $set: { shares: shareResult._id }, });
             }
             return shareResult;
         } catch (err) {

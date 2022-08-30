@@ -28,7 +28,7 @@ class PostRepository {
           model: 'users',
         },
       }).populate({
-        path: 'shareId',
+        path: 'shares',
         model: 'shares',
           populate: {
             path: 'shareDetails.userId',
