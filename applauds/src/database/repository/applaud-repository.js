@@ -83,13 +83,13 @@ class ApplaudRepository {
 
   async getApplaud(id) {
     try {
-      const data = await ApplaudModel.find({ postId: id });
+      const data = await ApplaudModel.find({ postId: id, isDeleted: false });
       return data;
     } catch (error) {
       throw new APIError(
         'API Error',
         STATUS_CODES.INTERNAL_ERROR,
-        'Unable to Delete Applaud'
+        'Unable to fetch applaud'
       );
     }
   }
