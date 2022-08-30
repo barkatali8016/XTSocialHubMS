@@ -4,4 +4,5 @@ module.exports = {
   PostRepository: require('./repository/post-repository'),
   CommentRepository: require('./repository/comment-repository'),
   ApplaudRepository: require('./repository/applaud-repository'),
+  SharePostRepository: require("./repository/share-post-repository"),
 };

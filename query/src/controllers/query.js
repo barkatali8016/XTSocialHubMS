@@ -3,6 +3,7 @@ const {
   PostRepository,
   CommentRepository,
   ApplaudRepository,
+  SharePostRepository,
 } = require('../database');
 class UserController {
   constructor() {
@@ -10,6 +11,7 @@ class UserController {
     this.postRepository = new PostRepository();
     this.commentRepository = new CommentRepository();
     this.applaudRepository = new ApplaudRepository();
+    this.sharePostRepo = new SharePostRepository();
   }
   async createUser(userInputs) {
     try {
@@ -67,6 +69,14 @@ class UserController {
     }
   }
 
+  async sharePost(shareInputs) {
+    try {
+      return await this.sharePostRepo.SharePost(shareInputs);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getAllPosts() {
     try {
       return await this.postRepository.GetAllPosts();
@@ -119,6 +129,10 @@ class UserController {
       case 'APPLAUD_DELETED':
         console.log(data, 'EVENT in Controller');
         this.deleteApplaud(data);
+        break;
+      case "POST_SHARED":
+        console.log(data, "EVENT in Controller SHARES");
+        this.sharePost(data);
         break;
       default:
         break;

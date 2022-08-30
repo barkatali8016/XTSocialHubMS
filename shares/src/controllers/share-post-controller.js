@@ -5,7 +5,7 @@ class SharePostController {
     constructor() {
         this.repository = new SharePostRepository();
     }
-    async share({ postId, userId, applaudId }) {
+    async share({ postId, userId }) {
         try {
             const sharePost = await this.repository.sharepost({
                 postId,
@@ -14,7 +14,7 @@ class SharePostController {
             if (!sharePost) {
                 return {};
             }
-            return FormatData({ id: sharePost._id });
+            return FormatData(sharePost);
         } catch (error) {
             throw new APIError('Data Not found', error);
         }
