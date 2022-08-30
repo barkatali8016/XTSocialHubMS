@@ -44,10 +44,14 @@ class APIError extends AppError {
 
 //400
 class BadRequestError extends AppError {
-  constructor(description = 'Bad request', logingErrorResponse) {
+  constructor(
+    description = 'Bad request',
+    statusCode = STATUS_CODES.BAD_REQUEST,
+    logingErrorResponse
+  ) {
     super(
       'NOT FOUND',
-      STATUS_CODES.BAD_REQUEST,
+      statusCode,
       description,
       true,
       false,

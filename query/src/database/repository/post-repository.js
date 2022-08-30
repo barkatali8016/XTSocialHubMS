@@ -54,6 +54,22 @@ class PostRepository {
             path: "userId",
             model: "users",
           },
+        })
+        .populate({
+          path: "shares",
+          model: "shares",
+          populate: {
+            path: "shareDetails.userId",
+            model: "users",
+          },
+        })
+        .populate({
+          path: "applauds",
+          model: "applauds",
+          populate: {
+            path: "userId",
+            model: "users",
+          },
         });
 
       return results;
@@ -96,6 +112,22 @@ class PostRepository {
         .populate({
           path: "comments",
           model: "comments",
+          populate: {
+            path: "userId",
+            model: "users",
+          },
+        })
+        .populate({
+          path: "shares",
+          model: "shares",
+          populate: {
+            path: "shareDetails.userId",
+            model: "users",
+          },
+        })
+        .populate({
+          path: "applauds",
+          model: "applauds",
           populate: {
             path: "userId",
             model: "users",

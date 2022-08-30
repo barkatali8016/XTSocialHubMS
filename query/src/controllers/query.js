@@ -2,13 +2,18 @@ const {
   UserRepository,
   PostRepository,
   CommentRepository,
+  ApplaudRepository,
+  SharePostRepository,
 } = require("../database");
 class UserController {
   constructor() {
     this.userRepository = new UserRepository();
     this.postRepository = new PostRepository();
     this.commentRepository = new CommentRepository();
+    this.applaudRepository = new ApplaudRepository();
+    this.sharePostRepo = new SharePostRepository();
   }
+
   async createUser(userInputs) {
     try {
       return await this.userRepository.CreateUser(userInputs);
@@ -41,6 +46,39 @@ class UserController {
     }
   }
 
+  async createApplaud(applaudInputs) {
+    try {
+      return await this.applaudRepository.createApplaud(applaudInputs);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateApplaud(applaudInputs) {
+    try {
+      return await this.applaudRepository.updateApplaud(applaudInputs);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteApplaud(applaudInputs) {
+    try {
+      return await this.applaudRepository.deleteApplaud(applaudInputs);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async sharePost(shareInputs) {
+    try {
+      return await this.sharePostRepo.SharePost(shareInputs);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // FETCH POSTS
   async getAllPosts({ page, limit }) {
     try {
       return await this.postRepository.GetAllPosts({ page, limit });
@@ -63,7 +101,7 @@ class UserController {
 
   async SubscribeEvents(payload) {
     const { event, data } = JSON.parse(payload);
-
+    console.log("query payload=>", payload);
     switch (event) {
       case "USER_CREATED":
         // UPDATE USER DB
@@ -90,6 +128,25 @@ class UserController {
       case "COMMENT_UPDATED":
         console.log(data, "EVENT in Controller");
         this.updateComment(data);
+        break;
+
+      case "APPLAUD_CREATED":
+        console.log(data, "EVENT in Controller");
+        this.createApplaud(data);
+        break;
+
+      case "APPLAUD_UPDATED":
+        console.log(data, "EVENT in Controller");
+        this.updateApplaud(data);
+        break;
+
+      case "APPLAUD_DELETED":
+        console.log(data, "EVENT in Controller");
+        this.deleteApplaud(data);
+        break;
+      case "POST_SHARED":
+        console.log(data, "EVENT in Controller SHARES");
+        this.sharePost(data);
         break;
       default:
         break;
