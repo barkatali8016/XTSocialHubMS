@@ -10,7 +10,6 @@ const mongoose = require('mongoose');
 class ApplaudRepository {
   async createApplaud({ postId, userId, applaudKey }) {
     try {
-      console.log(postId, userId, applaudKey);
       const recordExist = await ApplaudModel.findOne({ postId, userId });
       if (recordExist) {
         return null;
@@ -31,19 +30,25 @@ class ApplaudRepository {
     }
   }
 
-  async updateApplaud({ applaudId, userId, applaudKey }) {
+  async updateApplaud({ applaudId, applaudKey }) {
     try {
       if (!mongoose.Types.ObjectId.isValid(applaudId)) {
-        console.log('INVALID');
         throw new BadRequestError('Invalid Applaud ID');
       }
-      const applaudResult = await ApplaudModel.findOneAndUpdate(
-        { _id: applaudId },
+      const applaudResult = await ApplaudModel.findByIdAndUpdate(
+        applaudId,
         { applaudKey },
         {
           new: true,
         }
       );
+      console.log(applaudResult);
+      if (!applaudResult) {
+        throw new BadRequestError(
+          'Applaud ID does not exist',
+          STATUS_CODES.NOT_FOUND
+        );
+      }
       return applaudResult;
     } catch (err) {
       throw err;
@@ -55,9 +60,31 @@ class ApplaudRepository {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new BadRequestError('Invalid Applaud ID');
       }
-      const deleted = await ApplaudModel.findByIdAndDelete(id);
-      console.log('deleted', deleted);
+      const deleted = await ApplaudModel.findByIdAndUpdate(
+        id,
+        {
+          isDeleted: true,
+        },
+        {
+          new: true,
+        }
+      );
+      if (!deleted) {
+        throw new BadRequestError(
+          'Applaud ID does not exist',
+          STATUS_CODES.NOT_FOUND
+        );
+      }
       return deleted;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getApplaud(id) {
+    try {
+      const data = await ApplaudModel.find({ postId: id });
+      return data;
     } catch (error) {
       throw new APIError(
         'API Error',
