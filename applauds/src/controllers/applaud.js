@@ -13,25 +13,19 @@ class ApplaudController {
         userId,
         applaudKey,
       });
-      if (!createdApplaud) {
-        return {};
-      }
-      console.log(createdApplaud);
-      return FormatData({ id: createdApplaud._id });
+      return FormatData(createdApplaud);
     } catch (error) {
       throw error;
     }
   }
 
-  async updateApplaud({ applaudId, userId, applaudKey }) {
+  async updateApplaud({ applaudId, applaudKey }) {
     try {
       const updatedApplaud = await this.repository.updateApplaud({
         applaudId,
-        userId,
         applaudKey,
       });
-      console.log('here====');
-      return FormatData({ id: updatedApplaud._id });
+      return FormatData(updatedApplaud);
     } catch (error) {
       throw error;
     }
@@ -40,17 +34,13 @@ class ApplaudController {
   async deleteApplaud(id) {
     try {
       const deletedApplaud = await this.repository.deleteApplaud(id);
-      if (!deletedApplaud) {
-        return {};
-      }
-      return FormatData({ id: deletedApplaud._id });
+      return FormatData(deletedApplaud);
     } catch (error) {
       throw error;
     }
   }
   async getApplaud(id) {
     try {
-      console.log('con', id);
       const getApplaud = await this.repository.getApplaud(id);
       if (getApplaud.length == 0) {
         throw new APIError(
