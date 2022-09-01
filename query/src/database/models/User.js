@@ -8,11 +8,9 @@ const UserSchema = new Schema(
     firstname: { type: String, require: true },
     lastname: { type: String, require: true },
     email: { type: String, require: true },
-    // password: { type: String, require: true },
-    // salt: String,
     phone: { type: String, require: true },
     address: { type: String, require: false },
-    // posts: [{ type: Schema.Types.ObjectId, ref: "posts", require: true }],
+    careerState: { type: String, require: false },
     isDeleted: { type: Boolean, default: false },
   },
   {
