@@ -16,7 +16,7 @@ module.exports = async (app, channel) => {
       const { page = 1, limit = 10 } = req.query;
       const data = await queryController.getAllPosts({ page, limit });
       if (data) {
-        return res.status(STATUS_CODES.USER_CREATED).json(data);
+        return res.status(STATUS_CODES.OK).json(data);
       } else {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
@@ -36,7 +36,7 @@ module.exports = async (app, channel) => {
         limit,
       });
       if (data) {
-        return res.status(STATUS_CODES.USER_CREATED).json(data);
+        return res.status(STATUS_CODES.OK).json(data);
       } else {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
@@ -57,7 +57,7 @@ module.exports = async (app, channel) => {
         limit,
       });
       if (data) {
-        return res.status(STATUS_CODES.USER_CREATED).json(data);
+        return res.status(STATUS_CODES.OK).json(data);
       } else {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
