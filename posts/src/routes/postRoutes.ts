@@ -17,7 +17,7 @@ export const postRoutes = async (app: Express, channel: any) => {
       try {
         const { content } = req.body;
         const readingTime = CalculateReadingTime(content);
-        req.body.readingTime = readingTime;
+        req.body.approxReadingTime = readingTime;
         const { _id } = req.user;
         req.body.userId = _id;
         const result = await postController.createNewPost(req.body);

@@ -19,15 +19,9 @@ module.exports = async (app, channel) => {
           error: validate.error.details[0].message,
         });
       }
-      const { firstname, lastname, email, password, phone } = req.body;
+      // const { firstname, lastname, email, password, phone,careerState,address } = req.body;
 
-      const { data } = await userController.SignUp({
-        firstname,
-        lastname,
-        email,
-        password,
-        phone,
-      });
+      const { data } = await userController.SignUp(req.body);
       if (data) {
         PublishMessage(
           channel,

@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   #MongoDB services
@@ -84,6 +84,7 @@ services:
       dockerfile: Dockerfile
     container_name: comments
     restart: always
+    container_name: comments
     ports:
       - 8002:8002
     volumes:
@@ -121,12 +122,7 @@ services:
       - 8003:8003
     volumes:
       - ./applauds:/applauds/src/app
-    environment:
-      APP_SECRET: 'barkat'
-      MONGODB_URI: 'mongodb://mongo_db:27017/applauds'
-      PORT: 8003
-      MOJO_API_KEY: 'test-39c833cd-adc0-4787-8027-400b8551d49f'
-      MESSAGE_BROKER_URL: 'amqp://guest:guest@rabbitmq:5672'
+    env_file: applauds/.env.dev
     depends_on:
       - waitforrabbit
       - mongo_db
