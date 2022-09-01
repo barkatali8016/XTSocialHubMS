@@ -1,40 +1,53 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Express } from "express";
 import { PostController } from "../controller";
 
-import { CalculateReadingTime, PublishMessage, STATUS_CODES, validatePostBody } from "../utils";
+import { CalculateReadingTime, PublishMessage, STATUS_CODES } from "../utils";
 import { configuration } from "../config";
 import { multerInstance, PostsAuth } from "./middlewares";
 import { MulterError } from "multer";
 
+import { scheduleJob } from 'node-schedule';
+
 const { XTSOCIAL_BINDING_KEY } = configuration;
+
+// code to add 30 seconds to the current time for scheduling
+// let date  = new Date();
+// date.setSeconds(date.getSeconds() + 30);
+// console.log(date)
+
+const createPost = async (content: string, channel: any, req: any, postController: any) => {
+  const readingTime = CalculateReadingTime(content);
+  req.body.readingTime = readingTime;
+  const { _id } = req.user;
+  req.body.userId = _id;
+  const result = await postController.createNewPost(req.body);
+  // console.log(result, "=================+");
+  PublishMessage(
+    channel,
+    XTSOCIAL_BINDING_KEY,
+    JSON.stringify({ event: "POST_CREATED", data: result })
+  );
+  return result;
+}
 
 export const postRoutes = async (app: Express, channel: any) => {
   const postController = new PostController();
   app.post("/api/post/create", PostsAuth, async (req: any, res: any, next: any) => {
     try {
-      const { content, imageURL } = req.body;
+      const { content, imageURL, schedule } = req.body;
       if (!content && !imageURL) {
         return res.status(STATUS_CODES.BAD_REQUEST).json({
           error: 'Either post content or Image URL is required',
         });
       }
-      const validate = validatePostBody(req.body);
-      if (validate.error) {
-        return res.status(STATUS_CODES.BAD_REQUEST).json({
-          error: validate.error.details[0].message,
+      if (schedule && schedule.time) {
+        const job = scheduleJob(schedule.date, function () {
+          createPost(content, channel, req, postController)
+          job.cancel();
         });
       }
-      const readingTime = CalculateReadingTime(content);
-      req.body.readingTime = readingTime;
-      const { _id } = req.user;
-      req.body.userId = _id;
-      const result = await postController.createNewPost(req.body);
-      // console.log(result, "=================+");
-      PublishMessage(
-        channel,
-        XTSOCIAL_BINDING_KEY,
-        JSON.stringify({ event: "POST_CREATED", data: result })
-      );
+      const result = await createPost(content, channel, req, postController);
       res.statusCode = 201;
       res.send(result);
     } catch (error) {
