@@ -1,7 +1,7 @@
 import { Express } from "express";
 import { PostController } from "../controller";
 
-import { CalculateReadingTime, PublishMessage, STATUS_CODES } from "../utils";
+import { CalculateReadingTime, PublishMessage, STATUS_CODES, validatePostBody } from "../utils";
 import { configuration } from "../config";
 import { multerInstance, PostsAuth } from "./middlewares";
 import { MulterError } from "multer";
@@ -12,7 +12,18 @@ export const postRoutes = async (app: Express, channel: any) => {
   const postController = new PostController();
   app.post("/api/post/create", PostsAuth, async (req: any, res: any, next: any) => {
     try {
-      const { content } = req.body;
+      const { content, imageURL } = req.body;
+      if (!content && !imageURL) {
+        return res.status(STATUS_CODES.BAD_REQUEST).json({
+          error: 'Either post content or Image URL is required',
+        });
+      }
+      const validate = validatePostBody(req.body);
+      if (validate.error) {
+        return res.status(STATUS_CODES.BAD_REQUEST).json({
+          error: validate.error.details[0].message,
+        });
+      }
       const readingTime = CalculateReadingTime(content);
       req.body.readingTime = readingTime;
       const { _id } = req.user;
