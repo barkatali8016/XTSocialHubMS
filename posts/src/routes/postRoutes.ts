@@ -11,26 +11,26 @@ const { XTSOCIAL_BINDING_KEY } = configuration;
 export const postRoutes = async (app: Express, channel: any) => {
   const postController = new PostController();
   app.post("/api/post/create", PostsAuth, async (req: any, res: any, next: any) => {
-      try {
-        const { content } = req.body;
-        const readingTime = CalculateReadingTime(content);
-        req.body.readingTime = readingTime;
-        const { _id } = req.user;
-        req.body.userId = _id;
-        const result = await postController.createNewPost(req.body);
-        // console.log(result, "=================+");
-        PublishMessage(
-          channel,
-          XTSOCIAL_BINDING_KEY,
-          JSON.stringify({ event: "POST_CREATED", data: result })
-        );
-        res.statusCode = 201;
-        res.send(result);
-      } catch (error) {
-        console.log(error);
-        next(error);
-      }
+    try {
+      const { content } = req.body;
+      const readingTime = CalculateReadingTime(content);
+      req.body.readingTime = readingTime;
+      const { _id } = req.user;
+      req.body.userId = _id;
+      const result = await postController.createNewPost(req.body);
+      // console.log(result, "=================+");
+      PublishMessage(
+        channel,
+        XTSOCIAL_BINDING_KEY,
+        JSON.stringify({ event: "POST_CREATED", data: result })
+      );
+      res.statusCode = 201;
+      res.send(result);
+    } catch (error) {
+      console.log(error);
+      next(error);
     }
+  }
   );
 
   app.get("/api/post/list", PostsAuth, async (_, res, next) => {
@@ -58,16 +58,12 @@ export const postRoutes = async (app: Express, channel: any) => {
     }
   });
 
-  app.post("/api/post/image-upload", (req, res) => {
+  app.post("/api/post/image-upload", PostsAuth, (req, res) => {
     let message = 'success';
-    if (!req.file) {
-      return res.status(STATUS_CODES.BAD_REQUEST).json({
-        error: 'The request does not have an image',
-      });
-    }
     multerInstance(req, res, (err) => {
       if (!err) {
-        return res.status(STATUS_CODES.OK).send({ message });
+        console.log(req.file);
+        return res.status(STATUS_CODES.OK).send({ message, imageURL: `images/${req.file?.filename}` });
       }
       if (err instanceof MulterError && err.code === 'LIMIT_FILE_SIZE') {
         message = `Image size should be less than 2MB.`;

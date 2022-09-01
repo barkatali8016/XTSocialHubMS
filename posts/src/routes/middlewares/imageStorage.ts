@@ -6,10 +6,10 @@ const maxFileSize = 2000000 // 2MB - 2 * 1024 * 1024
 
 const imageStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './asset/images')
+        cb(null, './src/asset/images')
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname)
+        cb(null, `${Date.now()}_${file.originalname}`)
     }
 });
 
