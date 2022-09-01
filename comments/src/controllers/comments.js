@@ -7,13 +7,13 @@ class CommentsController {
     this.repository = new CommentsRepository();
   }
 
-  async comment({ postId, commentText, userId }) {
+  async comment( postId, commentText, userId ) {
     try {
-      const createdComment = await this.repository.CreateComments({
+      const createdComment = await this.repository.CreateComments(
         postId,
         commentText,
         userId,
-      });
+      );
       if (!createdComment) {
         return {};
       }
@@ -59,7 +59,7 @@ class CommentsController {
       if (!deletedComment) {
         return {};
       }
-      return FormatData({ deletedComment });
+      return FormatData(deletedComment);
     } catch (error) {
       return error.message;
     }

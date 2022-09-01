@@ -7,11 +7,12 @@ const {
 
 //Dealing with data base operations
 class CommentsRepository {
-  async CreateComments({ postId, commentText, userId }) {
+  async CreateComments( postId, commentText, userId ) {
     try {
       if (!commentText) {
         return null;
       }
+      console.log("postId, commentText, userId============= ",postId, commentText, userId);
       const comment = new CommentsModel({
         postId,
         commentText,
@@ -57,9 +58,11 @@ class CommentsRepository {
       if (!commentId) {
         return null;
       }
-      const deletedComment = await CommentsModel.findOneAndDelete({
-        _id: commentId,
-      });
+      const deletedComment = await CommentsModel.findByIdAndUpdate(
+        { _id: commentId },
+        { isDeleted: true },
+        { returnOriginal: false }
+      );
       if (deletedComment) {
         return deletedComment;
       } else {

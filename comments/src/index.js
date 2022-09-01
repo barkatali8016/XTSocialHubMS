@@ -21,7 +21,9 @@ const StartServer = async () => {
   });
   app
     .listen(PORT, () => {
-      console.log(`-----------Comments Service is running on Port ${PORT}----------`);
+      console.log(
+        `============================ COMMENTS SERVICE IS RUNNING ON PORT ${PORT} ======================================`
+      );
     })
     .on("error", (error) => {
       console.log(error);
