@@ -46,6 +46,14 @@ class UserController {
     }
   }
 
+  async deleteComment(commentInputs) {
+    try {
+      return await this.commentRepository.DeleteComment(commentInputs);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createApplaud(applaudInputs) {
     try {
       return await this.applaudRepository.createApplaud(applaudInputs);
@@ -57,14 +65,6 @@ class UserController {
   async updateApplaud(applaudInputs) {
     try {
       return await this.applaudRepository.updateApplaud(applaudInputs);
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async deleteApplaud(applaudInputs) {
-    try {
-      return await this.applaudRepository.deleteApplaud(applaudInputs);
     } catch (error) {
       throw error;
     }
@@ -122,8 +122,8 @@ class UserController {
         this.createComment(data);
         break;
       case "COMMENT_DELETED":
-        console.log(data, "EVENT in Controller");
-        // this.updateComment(data);
+        console.log(data, "DELETE EVENT in Comments Controller");
+        this.deleteComment(data);
         break;
       case "COMMENT_UPDATED":
         console.log(data, "EVENT in Controller");

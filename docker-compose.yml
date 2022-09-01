@@ -82,6 +82,7 @@ services:
     build:
       context: ./comments
       dockerfile: Dockerfile
+    container_name: comments
     restart: always
     container_name: comments
     ports:

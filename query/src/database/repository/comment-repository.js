@@ -34,6 +34,18 @@ class CommentRepository {
     }
   }
 
+  async DeleteComment(commentInputs) {
+    try {
+      const commentResult = await CommentModel.findByIdAndUpdate(
+        { _id: commentInputs._id },
+        { isDeleted: true },
+        { returnOriginal: false }
+      );
+      return commentResult;
+    } catch (err) {
+      throw err;
+    }
+  }
   // async FindUser({ email }) {
   //   try {
   //     const user = await UserModel.findOne({ email });
