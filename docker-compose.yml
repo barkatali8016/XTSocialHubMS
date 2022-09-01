@@ -82,12 +82,13 @@ services:
     build:
       context: ./comments
       dockerfile: Dockerfile
+    container_name: comments
     restart: always
     ports:
       - 8002:8002
     volumes:
       - ./comments:/comments/src/app/
-    env_file: query/.env.dev
+    env_file: comments/.env.dev
     depends_on:
       - waitforrabbit
       - mongo_db
