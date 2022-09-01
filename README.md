@@ -5,7 +5,7 @@
 #
 
 docker-compose run --rm waitforrabbit
-docker-compose up posts users comments query
+docker-compose up posts users comments query applauds shares
 
 # docker-compose up posts users
 

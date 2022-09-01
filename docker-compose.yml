@@ -1,4 +1,4 @@
-version: "3.9"
+version: '3.9'
 
 services:
   #MongoDB services
@@ -105,21 +105,37 @@ services:
 
   #Node shares API service
   shares:
-    build: 
+    build:
       context: ./shares
-      dockerfile: Dockerfile    
+      dockerfile: Dockerfile
     container_name: shares
     restart: always
     ports:
-      - 8003:8002
+      - 8004:8004
     volumes:
-      - ./shares:/shares/src/app 
+      - ./shares:/shares/src/app
+    env_file: shares/.env.dev
+    depends_on:
+      - waitforrabbit
+      - mongo_db
+      - rabbitmq
+
+  applauds:
+    build:
+      context: ./applauds
+      dockerfile: Dockerfile
+    container_name: applauds
+    restart: always
+    ports:
+      - 8003:8003
+    volumes:
+      - ./applauds:/applauds/src/app
     environment:
-      APP_SECRET: "barkat"
-      MONGODB_URI: "mongodb://mongo_db:27017/shares"
-      PORT: 8002
-      MOJO_API_KEY: "test-39c833cd-adc0-4787-8027-400b8551d49f"
-      MESSAGE_BROKER_URL: "amqp://guest:guest@rabbitmq:5672"  
+      APP_SECRET: 'barkat'
+      MONGODB_URI: 'mongodb://mongo_db:27017/applauds'
+      PORT: 8003
+      MOJO_API_KEY: 'test-39c833cd-adc0-4787-8027-400b8551d49f'
+      MESSAGE_BROKER_URL: 'amqp://guest:guest@rabbitmq:5672'
     depends_on:
       - waitforrabbit
       - mongo_db
