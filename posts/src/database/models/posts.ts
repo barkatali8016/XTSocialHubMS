@@ -2,13 +2,15 @@ import { Schema, model } from "mongoose";
 
 const postsSchema = new Schema(
   {
+    // _id: Schema.Types.ObjectId,
     content: { type: String },
     imageURL: { type: String },
     userId: { type: Schema.Types.ObjectId },
-    interactionCount: { type: Object },
     approxReadingTime: { type: Number, require: true },
     schedule: { type: Object },
-    isAudited: { type: Boolean, default: false },
+    isDeleted: { type: Boolean, default: false },
+    isDisabledInteractions: { type: Boolean, default: false },
+    // sharePostId:{ type: Schema.Types.ObjectId },
   },
   {
     toJSON: {
@@ -21,3 +23,6 @@ const postsSchema = new Schema(
 );
 
 export const postDBModel = model("post", postsSchema);
+
+// localhost:5000/api/posts
+// posts/images/xtsociallogo.png

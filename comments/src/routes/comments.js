@@ -4,9 +4,13 @@ const { STATUS_CODES } = require("../utils/app-errors");
 const { randomBytes } = require("crypto");
 const { PublishMessage } = require("../utils");
 const { XTSOCIAL_BINDING_KEY } = require("../config");
+const Filter = require('bad-words');
 
 module.exports = async (app, channel) => {
   const commentsController = new CommentsController();
+
+  let filter = new Filter({ placeHolder: 'x'});
+
   // ADD COMMENT
   app.post(
     "/api/comments/:postId/addComment",
@@ -14,14 +18,16 @@ module.exports = async (app, channel) => {
     async (req, res, next) => {
       try {
         const postId = req.params.postId;
-        const { commentText } = req.body;
+        let { commentText } = req.body;
         const userId = req.user._id;
 
-        const { data } = await commentsController.comment({
+        //Filtering Bad Words
+        commentText = filter.clean(commentText);
+        const { data } = await commentsController.comment(
           postId,
           commentText,
           userId,
-        });
+        );
         if (data) {
           PublishMessage(
             channel,
@@ -69,7 +75,8 @@ module.exports = async (app, channel) => {
     async (req, res, next) => {
       try {
         const commentId = req.params.commentId;
-        const { commentText } = req.body;
+        let { commentText } = req.body;
+        commentText = filter.clean(commentText);
 
         const { data } = await commentsController.editComment(
           commentId,
@@ -99,11 +106,16 @@ module.exports = async (app, channel) => {
     async (req, res) => {
       try {
         const commentId = req.params.commentId;
-        const deletedComment = await commentsController.deletedComment({
+        const {data} = await commentsController.deletedComment({
           commentId,
         });
-        if (deletedComment) {
-          return res.status(STATUS_CODES.OK).json({ deletedComment });
+        if (data) {
+          PublishMessage(
+            channel,
+            XTSOCIAL_BINDING_KEY,
+            JSON.stringify({ event: "COMMENT_DELETED", data })
+          );
+          return res.status(STATUS_CODES.OK).json(data);
         } else {
           return res
             .status(STATUS_CODES.BAD_REQUEST)

@@ -11,7 +11,10 @@ class CommentRepository {
     try {
       const comment = new CommentModel(commentInputs);
       const commentResult = await comment.save();
-      await PostModel.findOneAndUpdate({ _id: commentInputs.postId }, {$push: { comments: commentResult._id },});
+      await PostModel.findOneAndUpdate(
+        { _id: commentInputs.postId },
+        { $push: { comments: commentResult._id } }
+      );
       return commentResult;
     } catch (err) {
       throw err;
@@ -31,6 +34,18 @@ class CommentRepository {
     }
   }
 
+  async DeleteComment(commentInputs) {
+    try {
+      const commentResult = await CommentModel.findByIdAndUpdate(
+        { _id: commentInputs._id },
+        { isDeleted: true },
+        { returnOriginal: false }
+      );
+      return commentResult;
+    } catch (err) {
+      throw err;
+    }
+  }
   // async FindUser({ email }) {
   //   try {
   //     const user = await UserModel.findOne({ email });
