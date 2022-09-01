@@ -5,7 +5,6 @@ const postsSchema = new Schema(
     // _id: Schema.Types.ObjectId,
     content: { type: String },
     imageURL: { type: String },
-    postTitle: { type: String },
     userId: { type: Schema.Types.ObjectId },
     approxReadingTime: { type: Number, require: true },
     schedule: { type: Object },
