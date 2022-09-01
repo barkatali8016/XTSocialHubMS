@@ -1,5 +1,4 @@
 const { SharePostModel } = require('../models');
-const { APIError, STATUS_CODES } = require('../../utils/app-errors');
 
 //Performing DB operations
 class SharePostRepository {
@@ -11,7 +10,7 @@ class SharePostRepository {
                     $push: { shareDetails: { userId, sharedTime: new Date() } },
                     $inc: { shareCount: 1 }
                 },
-                { returnNewDocument: true },
+                { new: true },
             );
             if (alreadySharedPost) {
                 return alreadySharedPost;
@@ -25,16 +24,8 @@ class SharePostRepository {
                 return shareResult;
             }
         } catch (err) {
-            throw new APIError(
-                'API Error',
-                STATUS_CODES.INTERNAL_ERROR,
-                'Post sharing failed.'
-            );
+            throw err;
         }
-    }
-
-    async savingIntoDB(data) {
-
     }
 }
 
