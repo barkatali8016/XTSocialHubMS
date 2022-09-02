@@ -13,9 +13,12 @@ module.exports = async (app, channel) => {
   /*****
    * for creating applaud details in db
    * @body postId applaudKey
-   * @URL localhost:80/applauds/create
+   * @URL localhost:80/applaud
    */
-  app.post("/create", async (req, res, next) => {
+  app.post("/applaud", async (req, res, next) => {
+    // #swagger.tags = ['Applauds']
+    // #swagger.description = 'To save applaud details'
+
     try {
       const { postId, applaudKey } = req.body;
       if (!EMOJI_LIST.includes(applaudKey)) {
@@ -51,11 +54,15 @@ module.exports = async (app, channel) => {
   /*****
    * for updating applaud details in db based on applaudId
    * @body applaudId, applaudKey
-   * @URL localhost:80/applauds/create
+   * @URL localhost:80/applaud
    */
-  app.put("/update", async (req, res, next) => {
+  app.put("/applaud", async (req, res, next) => {
+    // #swagger.tags = ['Applauds']
+    // #swagger.description = 'To update applaud details'
     try {
       const { applaudId, applaudKey } = req.body;
+      const userId = req.user._id;
+
       if (!EMOJI_LIST.includes(applaudKey)) {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
@@ -65,6 +72,7 @@ module.exports = async (app, channel) => {
       const { data } = await applaudController.updateApplaud({
         applaudId,
         applaudKey,
+        userId,
       });
 
       if (data) {
@@ -87,12 +95,19 @@ module.exports = async (app, channel) => {
   /*****
    * for deleting applaud details based on applaud id
    * @params id
-   * @URL localhost:80/applauds/delete/1234
+   * @URL localhost:80/applauds/1234
    */
 
-  app.delete("/delete/:id", async (req, res, next) => {
+  app.delete("/applaud/:id", async (req, res, next) => {
+    // #swagger.tags = ['Applauds']
+    // #swagger.description = 'To delete applaud details'
     try {
-      const { data } = await applaudController.deleteApplaud(req.params.id);
+      const userId = req.user._id;
+
+      const { data } = await applaudController.deleteApplaud(
+        req.params.id,
+        userId
+      );
       if (data) {
         PublishMessage(
           channel,
@@ -113,9 +128,11 @@ module.exports = async (app, channel) => {
   /*****
    * for fetching applaud details based on postId
    * @params postId
-   * @URL localhost:80/applauds/fetch/1234
+   * @URL localhost:80/applaud/1234
    */
-  app.get("/fetch/:postId", async (req, res, next) => {
+  app.get("/applaud/:postId", async (req, res, next) => {
+    // #swagger.tags = ['Applauds']
+    // #swagger.description = 'To fetch applaud details'
     try {
       const data = await applaudController.getApplaud(req.params.postId);
       if (data) {
