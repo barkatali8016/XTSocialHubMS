@@ -1,23 +1,27 @@
-const { ApplaudController } = require('../controllers');
+const { ApplaudController } = require("../controllers");
 const {
   validateSignUpBody,
   validateSignInBody,
-} = require('../utils/validators');
-const { STATUS_CODES } = require('../utils/app-errors');
-const { EMOJI_LIST, XTSOCIAL_BINDING_KEY } = require('../config');
-const { PublishMessage } = require('../utils');
+} = require("../utils/validators");
+const { STATUS_CODES } = require("../utils/app-errors");
+const { EMOJI_LIST, XTSOCIAL_BINDING_KEY } = require("../config");
+const { PublishMessage } = require("../utils");
 
 module.exports = async (app, channel) => {
   const applaudController = new ApplaudController();
 
-  //for creating applaud details in db
-  app.post('/api/applaud', async (req, res, next) => {
+  /*****
+   * for creating applaud details in db
+   * @body postId applaudKey
+   * @URL localhost:80/applauds/create
+   */
+  app.post("/create", async (req, res, next) => {
     try {
       const { postId, applaudKey } = req.body;
       if (!EMOJI_LIST.includes(applaudKey)) {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
-          .json({ error: 'Invalid Applaud Key' });
+          .json({ error: "Invalid Applaud Key" });
       }
       const userId = req.user._id;
 
@@ -31,27 +35,31 @@ module.exports = async (app, channel) => {
         PublishMessage(
           channel,
           XTSOCIAL_BINDING_KEY,
-          JSON.stringify({ event: 'APPLAUD_CREATED', data })
+          JSON.stringify({ event: "APPLAUD_CREATED", data })
         );
         return res.status(STATUS_CODES.APPLAUD_CREATED).json(data);
       } else {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
-          .json({ error: 'Applaud already exist.' });
+          .json({ error: "Applaud already exist." });
       }
     } catch (error) {
       next(error);
     }
   });
 
-  //for creating applaud details in db based on applaudId
-  app.put('/api/applaud', async (req, res, next) => {
+  /*****
+   * for updating applaud details in db based on applaudId
+   * @body applaudId, applaudKey
+   * @URL localhost:80/applauds/create
+   */
+  app.put("/update", async (req, res, next) => {
     try {
       const { applaudId, applaudKey } = req.body;
       if (!EMOJI_LIST.includes(applaudKey)) {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
-          .json({ error: 'Invalid Applaud Key' });
+          .json({ error: "Invalid Applaud Key" });
       }
 
       const { data } = await applaudController.updateApplaud({
@@ -63,42 +71,51 @@ module.exports = async (app, channel) => {
         PublishMessage(
           channel,
           XTSOCIAL_BINDING_KEY,
-          JSON.stringify({ event: 'APPLAUD_UPDATED', data })
+          JSON.stringify({ event: "APPLAUD_UPDATED", data })
         );
         return res.status(STATUS_CODES.APPLAUD_UPDATED).json(data);
       } else {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
-          .json({ error: 'Applaud already exist.' });
+          .json({ error: "Applaud already exist." });
       }
     } catch (error) {
       next(error);
     }
   });
 
-  //for deleting applaud details based on applaud id
-  app.delete('/api/applaud/:id', async (req, res, next) => {
+  /*****
+   * for deleting applaud details based on applaud id
+   * @params id
+   * @URL localhost:80/applauds/delete/1234
+   */
+
+  app.delete("/delete/:id", async (req, res, next) => {
     try {
       const { data } = await applaudController.deleteApplaud(req.params.id);
       if (data) {
         PublishMessage(
           channel,
           XTSOCIAL_BINDING_KEY,
-          JSON.stringify({ event: 'APPLAUD_DELETED', data })
+          JSON.stringify({ event: "APPLAUD_DELETED", data })
         );
         return res.status(STATUS_CODES.APPLAUD_DELETED).json(data);
       } else {
         return res
           .status(STATUS_CODES.NOT_FOUND)
-          .json({ error: 'Applaud not found' });
+          .json({ error: "Applaud not found" });
       }
     } catch (error) {
       next(error);
     }
   });
 
-  //for fetching applaud details based on postId
-  app.get('/api/applaud/:postId', async (req, res, next) => {
+  /*****
+   * for fetching applaud details based on postId
+   * @params postId
+   * @URL localhost:80/applauds/fetch/1234
+   */
+  app.get("/fetch/:postId", async (req, res, next) => {
     try {
       const data = await applaudController.getApplaud(req.params.postId);
       if (data) {
@@ -106,7 +123,7 @@ module.exports = async (app, channel) => {
       } else {
         return res
           .status(STATUS_CODES.NOT_FOUND)
-          .json({ error: 'Applaud not found' });
+          .json({ error: "Applaud not found" });
       }
     } catch (error) {
       next(error);

@@ -10,7 +10,10 @@ const { PublishMessage } = require("../utils");
 const { XTSOCIAL_BINDING_KEY } = require("../config");
 module.exports = async (app, channel) => {
   const userController = new UserController();
-  //SIGN UP ROUTES
+  /*****
+   * SIGN UP
+   * @body
+   */
   app.post("/signup", async (req, res, next) => {
     try {
       const validate = validateSignUpBody(req.body);
@@ -40,7 +43,10 @@ module.exports = async (app, channel) => {
     }
   });
 
-  //SIGN in ROUTES
+  /*****
+   * SIGN IN
+   * @body
+   */
   app.post("/signin", async (req, res, next) => {
     try {
       const validate = validateSignInBody(req.body);
@@ -66,7 +72,10 @@ module.exports = async (app, channel) => {
     }
   });
 
-  //verifyOtp ROUTES
+  /*****
+   * verifyOtp
+   * @body
+   */
   app.post("/verifyOtp", UserAuth, async (req, res, next) => {
     try {
       const validate = validateVerifyOtpBody(req.body);

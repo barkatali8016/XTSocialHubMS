@@ -6,9 +6,9 @@ module.exports = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("COMMENTS DB CONNECTED!!");
+    console.log("!!! COMMENTS DB CONNECTED!!!");
   } catch (error) {
-    console.log("======DB CONNECTION ERROR======");
+    console.log("====== COMMENTS DB CONNECTION ERROR======");
     console.log(error);
     process.exit(1);
   }
