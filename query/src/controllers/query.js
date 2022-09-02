@@ -4,7 +4,7 @@ const {
   CommentRepository,
   ApplaudRepository,
   SharePostRepository,
-} = require("../database");
+} = require('../database');
 class UserController {
   constructor() {
     this.userRepository = new UserRepository();
@@ -70,6 +70,14 @@ class UserController {
     }
   }
 
+  async deleteApplaud(applaudInputs) {
+    try {
+      return await this.applaudRepository.deleteApplaud(applaudInputs);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async sharePost(shareInputs) {
     try {
       return await this.sharePostRepo.SharePost(shareInputs);
@@ -101,51 +109,51 @@ class UserController {
 
   async SubscribeEvents(payload) {
     const { event, data } = JSON.parse(payload);
-    console.log("query payload=>", payload);
+    console.log('query payload=>', payload);
     switch (event) {
-      case "USER_CREATED":
+      case 'USER_CREATED':
         // UPDATE USER DB
-        console.log(data.user, "EVENT in Controller USER");
+        console.log(data.user, 'EVENT in Controller USER');
         this.createUser(data.user);
         break;
-      case "POST_CREATED":
-        console.log(data, "EVENT in Controller POST");
+      case 'POST_CREATED':
+        console.log(data, 'EVENT in Controller POST');
         this.createPost(data);
         break;
-      case "POST_DELETED":
-      case "POST_UPDATED":
+      case 'POST_DELETED':
+      case 'POST_UPDATED':
         // UPDATE USER DB
-        console.log(data, "EVENT in Controller POST");
+        console.log(data, 'EVENT in Controller POST');
         break;
-      case "COMMENT_CREATED":
-        console.log(data, "EVENT in Controller COMMENT");
+      case 'COMMENT_CREATED':
+        console.log(data, 'EVENT in Controller COMMENT');
         this.createComment(data);
         break;
-      case "COMMENT_DELETED":
-        console.log(data, "DELETE EVENT in Comments Controller");
+      case 'COMMENT_DELETED':
+        console.log(data, 'DELETE EVENT in Comments Controller');
         this.deleteComment(data);
         break;
-      case "COMMENT_UPDATED":
-        console.log(data, "EVENT in Controller");
+      case 'COMMENT_UPDATED':
+        console.log(data, 'EVENT in Controller');
         this.updateComment(data);
         break;
 
-      case "APPLAUD_CREATED":
-        console.log(data, "EVENT in Controller");
+      case 'APPLAUD_CREATED':
+        console.log(data, 'EVENT in Controller');
         this.createApplaud(data);
         break;
 
-      case "APPLAUD_UPDATED":
-        console.log(data, "EVENT in Controller");
+      case 'APPLAUD_UPDATED':
+        console.log(data, 'EVENT in Controller');
         this.updateApplaud(data);
         break;
 
-      case "APPLAUD_DELETED":
-        console.log(data, "EVENT in Controller");
+      case 'APPLAUD_DELETED':
+        console.log(data, 'EVENT in Controller');
         this.deleteApplaud(data);
         break;
-      case "POST_SHARED":
-        console.log(data, "EVENT in Controller SHARES");
+      case 'POST_SHARED':
+        console.log(data, 'EVENT in Controller SHARES');
         this.sharePost(data);
         break;
       default:
