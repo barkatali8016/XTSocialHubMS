@@ -16,9 +16,7 @@ const StartServer = async () => {
   });
   app
     .listen(PORT, () => {
-      console.log(
-        `============================ USER SERVICE IS RUNNING ON PORT ${PORT} ======================================`
-      );
+      console.log(`======== USERS SERVICE IS RUNNING ON PORT ${PORT} ========`);
     })
     .on("error", (error) => {
       console.log(error);

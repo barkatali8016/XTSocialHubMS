@@ -6,9 +6,9 @@ module.exports = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("DB CONNECTED!!");
+    console.log("!!! QUERY DB CONNECTED!!!");
   } catch (error) {
-    console.log("ERROR======DB CONNECTION ERROR======");
+    console.log("====== QUERY DB CONNECTION ERROR======");
     console.log(error);
     process.exit(1);
   }

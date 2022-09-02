@@ -16,9 +16,7 @@ const StartServer = async () => {
   });
   app
     .listen(PORT, () => {
-      console.log(
-        `============================ QUERY SERVICE IS RUNNING ON PORT ${PORT} ======================================`
-      );
+      console.log(`======== QUERY SERVICE IS RUNNING ON PORT ${PORT} ========`);
     })
     .on("error", (error) => {
       console.log(error);
