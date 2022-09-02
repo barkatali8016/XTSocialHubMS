@@ -19,6 +19,8 @@ module.exports.validateSignUpBody = (body) => {
       .trim()
       .regex(/^[0-9]{7,10}$/)
       .required(),
+    careerState: Joi.string().trim(),
+    address: Joi.string().trim(),
   });
 
   return schema.validate(body);

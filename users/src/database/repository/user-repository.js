@@ -7,20 +7,13 @@ const {
 
 //Dealing with data base operations
 class UserRepository {
-  async CreateUser({ firstname, lastname, email, password, phone, salt }) {
+  async CreateUser(userInputs) {
     try {
       const isEmailExist = await UserModel.findOne({ email });
       if (isEmailExist) {
         return null;
       }
-      const user = new UserModel({
-        firstname,
-        lastname,
-        email,
-        password,
-        salt,
-        phone,
-      });
+      const user = new UserModel(userInputs);
       const userResult = await user.save();
       return userResult;
     } catch (err) {
