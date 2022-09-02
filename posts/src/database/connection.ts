@@ -1,11 +1,12 @@
-import { connect } from 'mongoose';
-import { configuration } from '../config';
+import { connect } from "mongoose";
+import { configuration } from "../config";
 
 export const databaseConnection = async () => {
-    try {
-        await connect(configuration.DB_URL);
-        console.log('DB Connected');
-    } catch (error) {
-        console.log(error);
-    }
-}
+  try {
+    await connect(configuration.DB_URL);
+    console.log("!!! POSTS DB CONNECTED!!!");
+  } catch (error) {
+    console.log("====== POSTS DB CONNECTION ERROR======");
+    console.log(error);
+  }
+};

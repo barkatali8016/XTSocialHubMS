@@ -1,0 +1,668 @@
+{
+	"info": {
+		"_postman_id": "92706696-bc6b-4884-9774-611c2eae27a7",
+		"name": "XT SOCIAL HUB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "SignUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\":\"Barkat\",\n    \"lastname\":\"Ali\",\n    \"email\":\"barkat.ali@publicissapient.com\",\n    \"phone\":\"9090909090\",\n    \"password\":\"Password@123\",\n    \"careerStage\":\"Associate Technology L2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SignIn",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmY0ZTY4NWI1YjVjYzk4NTk5YzBiOGYiLCJpYXQiOjE2NjAyNzk4NzAsImV4cCI6MTY2MDI4MDc3MH0.6OQjXXc1LG6ehH8Qkw15MXm4ynEzEM2DIKr1M_TRDYs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \n    \"email\":\"barkat.ali@publicissapient.com\",\n    \"password\":\"Password@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/signin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VerifyOtp",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzExYmI1MmY0MzI1YTk4YmQ5NmFkNDAiLCJpYXQiOjE2NjIxMDcwMTIsImV4cCI6MTY2MjEwNzkxMn0.c47GSVWPUJzlCF03eCgQBFi4eRWdNBfTQDiNf7UwHO8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"otp\":\"116036\",\n    \"stateId\":\"6311bd854d9a784d39924766\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/verifyOtp",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"verifyOtp"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "posts",
+			"item": [
+				{
+					"name": "Create Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Hi I am Anant Jain, I am software developer at Publicis Sapient. I joined at sapient at 10jan 2022\",\n    \"imageURL\": \"string\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/posts/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UploadImage",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "upload",
+									"type": "file",
+									"src": "/Users/barali/Downloads/profile-image_1645614465743.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/posts/image-upload",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								"image-upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getSinglePost",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/posts/fetch/6311c2684d1462bac3981f62",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								"fetch",
+								"6311c2684d1462bac3981f62"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletePostById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/posts/delete/6311c2684d1462bac3981f62",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								"delete",
+								"6311c2684d1462bac3981f62"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllPosts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/posts/list",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "comments",
+			"item": [
+				{
+					"name": "createComment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"commentText\":\"Congratualations Party..😎😎😎\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/comments/6311d0c54d3988da0e66f231/addComment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comments",
+								"6311d0c54d3988da0e66f231",
+								"addComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateComment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"commentText\":\"Updated commets \"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/comments/6311d1536469148ebbe47904/editComment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comments",
+								"6311d1536469148ebbe47904",
+								"editComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCommentById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/comments/6311d1536469148ebbe47904/deleteComment",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comments",
+								"6311d1536469148ebbe47904",
+								"deleteComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCommentsByPostId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/comments/6311d0c54d3988da0e66f231/getComments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comments",
+								"6311d0c54d3988da0e66f231",
+								"getComments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "applauds",
+			"item": [
+				{
+					"name": "createApplaud",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"applaudKey\": 5,\n    \"postId\": \"6311d0c54d3988da0e66f231\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/applauds/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"applauds",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateApplaud",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"applaudKey\": 3,\n    \"applaudId\": \"6311cea1e4b247a8ea8fdd5e\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/applauds/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"applauds",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteApplaud",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/applauds/delete/6311cea1e4b247a8ea8fdd5e",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"applauds",
+								"delete",
+								"6311cea1e4b247a8ea8fdd5e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getApplaud",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/applauds/fetch/6311d0c54d3988da0e66f231",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"applauds",
+								"fetch",
+								"6311d0c54d3988da0e66f231"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "shares",
+			"item": [
+				{
+					"name": "sharePost",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/shares/6311cdd17765bad4de883efe/share",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"shares",
+								"6311cdd17765bad4de883efe",
+								"share"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getShareCount",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/shares/6311cdd17765bad4de883efe/shareCount",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"shares",
+								"6311cdd17765bad4de883efe",
+								"shareCount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getShareUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/shares/6311cdd17765bad4de883efe/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"shares",
+								"6311cdd17765bad4de883efe",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "query",
+			"item": [
+				{
+					"name": "fetchAllPost",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fetch/all-posts?page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fetch",
+								"all-posts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetchAllPostByUserId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fetch/posts/6311bb52f4325a98bd96ad40?page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fetch",
+								"posts",
+								"6311bb52f4325a98bd96ad40"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "fetchAllPostByCurrentUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/fetch/posts/current-user?page=1&limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"fetch",
+								"posts",
+								"current-user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "XT SOCIAL HUB HOME",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000",
+					"host": [
+						"localhost"
+					],
+					"port": "8000"
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzExYmI1MmY0MzI1YTk4YmQ5NmFkNDAiLCJpYXQiOjE2NjIxMDcwNzEsImV4cCI6MTY2MjE5MzQ3MX0.7tZqJWL-wsTHz3P09-L792634ID2-Z5Zt-WYjsGF_gk",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

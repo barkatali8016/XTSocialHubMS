@@ -10,8 +10,9 @@ const UserSchema = new Schema(
     password: { type: String, require: true },
     salt: String,
     phone: { type: String, require: true },
-    address: { type: String, require: false },
-    careerState: { type: String, require: false },
+    address: { type: String, require: false, default: "" },
+    careerStage: { type: String, require: true },
+    isDeleted: { type: Boolean, default: false },
   },
   {
     toJSON: {

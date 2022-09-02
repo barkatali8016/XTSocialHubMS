@@ -10,7 +10,7 @@ const UserSchema = new Schema(
     email: { type: String, require: true },
     phone: { type: String, require: true },
     address: { type: String, require: false },
-    careerState: { type: String, require: false },
+    careerStage: { type: String, require: true },
     isDeleted: { type: Boolean, default: false },
   },
   {
