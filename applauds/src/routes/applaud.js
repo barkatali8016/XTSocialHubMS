@@ -12,6 +12,9 @@ module.exports = async (app, channel) => {
 
   //for creating applaud details in db
   app.post('/api/applaud', async (req, res, next) => {
+    // #swagger.tags = ['Applauds']
+    // #swagger.description = 'To save applaud details'
+
     try {
       const { postId, applaudKey } = req.body;
       if (!EMOJI_LIST.includes(applaudKey)) {
@@ -46,8 +49,12 @@ module.exports = async (app, channel) => {
 
   //for creating applaud details in db based on applaudId
   app.put('/api/applaud', async (req, res, next) => {
+    // #swagger.tags = ['Applauds']
+    // #swagger.description = 'To update applaud details'
     try {
       const { applaudId, applaudKey } = req.body;
+      const userId = req.user._id;
+
       if (!EMOJI_LIST.includes(applaudKey)) {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
@@ -57,6 +64,7 @@ module.exports = async (app, channel) => {
       const { data } = await applaudController.updateApplaud({
         applaudId,
         applaudKey,
+        userId,
       });
 
       if (data) {
@@ -78,8 +86,15 @@ module.exports = async (app, channel) => {
 
   //for deleting applaud details based on applaud id
   app.delete('/api/applaud/:id', async (req, res, next) => {
+    // #swagger.tags = ['Applauds']
+    // #swagger.description = 'To delete applaud details'
     try {
-      const { data } = await applaudController.deleteApplaud(req.params.id);
+      const userId = req.user._id;
+
+      const { data } = await applaudController.deleteApplaud(
+        req.params.id,
+        userId
+      );
       if (data) {
         PublishMessage(
           channel,
@@ -99,6 +114,8 @@ module.exports = async (app, channel) => {
 
   //for fetching applaud details based on postId
   app.get('/api/applaud/:postId', async (req, res, next) => {
+    // #swagger.tags = ['Applauds']
+    // #swagger.description = 'To fetch applaud details'
     try {
       const data = await applaudController.getApplaud(req.params.postId);
       if (data) {
