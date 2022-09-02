@@ -1,15 +1,21 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 const { STATUS_CODES } = require("../utils/app-errors");
-const { SharePostModel } = require('../database/models');
+const { SharePostModel } = require("../database/models");
 
-/* Get Share Count By PostId. */
-router.get('/post/:postId/shareCount', async (req, res) => {
+/*****
+ * Get Share Count By PostId.
+ * @params postId
+ * @URL localhost:80/shares/123/shareCount
+ */
+router.get("/:postId/shareCount", async (req, res) => {
   try {
     const postId = req.params.postId.toString();
     const getShareDetails = await SharePostModel.findOne({ postId });
     if (getShareDetails) {
-      return res.status(STATUS_CODES.OK).json({ shareCount: getShareDetails.shareCount });
+      return res
+        .status(STATUS_CODES.OK)
+        .json({ shareCount: getShareDetails.shareCount });
     } else {
       return res
         .status(STATUS_CODES.NOT_FOUND)

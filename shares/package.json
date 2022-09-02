@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "SET NODE_ENV=development & nodemon --legacy-watch src/index.js"
+    "start": "NODE_ENV=dev nodemon --legacy-watch src/index.js",
+    "prod": "NODE_ENV=prod nodemon --legacy-watch src/index.js",
+    "swagger-autogen": "node src/swagger.js"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +26,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.1",
     "morgan": "~1.9.1",
+    "swagger-autogen": "^2.21.5",
+    "swagger-ui-express": "^4.5.0",
     "uuid": "^8.3.2",
     "winston": "^3.8.1"
   },

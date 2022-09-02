@@ -2,7 +2,7 @@ const express = require("express");
 const { PORT } = require("./config");
 const { databaseConnection } = require("./database");
 const expressApp = require("./express-app");
-const {CreateChannel} = require("./utils");
+const { CreateChannel } = require("./utils");
 //CREATING EXPRESS SERVER
 const StartServer = async () => {
   const app = express();
@@ -21,7 +21,7 @@ const StartServer = async () => {
   });
   app
     .listen(PORT, () => {
-      console.log(`-----------Comments Service is running on Port ${PORT}----------`);
+      console.log(`======== POSTS SERVICE IS RUNNING ON PORT ${PORT} ========`);
     })
     .on("error", (error) => {
       console.log(error);

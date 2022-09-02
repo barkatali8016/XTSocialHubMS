@@ -3,6 +3,7 @@ const {
   PostRepository,
   CommentRepository,
   ApplaudRepository,
+  SharePostRepository,
 } = require('../database');
 class UserController {
   constructor() {
@@ -10,7 +11,9 @@ class UserController {
     this.postRepository = new PostRepository();
     this.commentRepository = new CommentRepository();
     this.applaudRepository = new ApplaudRepository();
+    this.sharePostRepo = new SharePostRepository();
   }
+
   async createUser(userInputs) {
     try {
       return await this.userRepository.CreateUser(userInputs);
@@ -43,6 +46,14 @@ class UserController {
     }
   }
 
+  async deleteComment(commentInputs) {
+    try {
+      return await this.commentRepository.DeleteComment(commentInputs);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createApplaud(applaudInputs) {
     try {
       return await this.applaudRepository.createApplaud(applaudInputs);
@@ -67,9 +78,30 @@ class UserController {
     }
   }
 
-  async getAllPosts() {
+  async sharePost(shareInputs) {
     try {
-      return await this.postRepository.GetAllPosts();
+      return await this.sharePostRepo.SharePost(shareInputs);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // FETCH POSTS
+  async getAllPosts({ page, limit }) {
+    try {
+      return await this.postRepository.GetAllPosts({ page, limit });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllPostsByUserId({ userId, page, limit }) {
+    try {
+      return await this.postRepository.GetAllPostsByUserId({
+        userId,
+        page,
+        limit,
+      });
     } catch (error) {
       throw error;
     }
@@ -98,8 +130,8 @@ class UserController {
         this.createComment(data);
         break;
       case 'COMMENT_DELETED':
-        console.log(data, 'EVENT in Controller');
-        // this.updateComment(data);
+        console.log(data, 'DELETE EVENT in Comments Controller');
+        this.deleteComment(data);
         break;
       case 'COMMENT_UPDATED':
         console.log(data, 'EVENT in Controller');
@@ -119,6 +151,10 @@ class UserController {
       case 'APPLAUD_DELETED':
         console.log(data, 'EVENT in Controller');
         this.deleteApplaud(data);
+        break;
+      case 'POST_SHARED':
+        console.log(data, 'EVENT in Controller SHARES');
+        this.sharePost(data);
         break;
       default:
         break;

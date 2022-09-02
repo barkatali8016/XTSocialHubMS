@@ -10,33 +10,35 @@ const { XTSOCIAL_BINDING_KEY } = configuration;
 
 export const postRoutes = async (app: Express, channel: any) => {
   const postController = new PostController();
-  app.post(
-    "/api/post/create",
-    PostsAuth,
-    async (req: any, res: any, next: any) => {
-      try {
-        const { content } = req.body;
-        const readingTime = CalculateReadingTime(content);
-        req.body.readingTime = readingTime;
-        const { _id } = req.user;
-        req.body.userId = _id;
-        const result = await postController.createNewPost(req.body);
-        // console.log(result, "=================+");
-        PublishMessage(
-          channel,
-          XTSOCIAL_BINDING_KEY,
-          JSON.stringify({ event: "POST_CREATED", data: result })
-        );
-        res.statusCode = 201;
-        res.send(result);
-      } catch (error) {
-        console.log(error);
-        next(error);
-      }
+  /*****
+   * CREATE POST
+   * @body
+   */
+  app.post("/create", PostsAuth, async (req: any, res: any, next: any) => {
+    try {
+      const { content } = req.body;
+      const readingTime = CalculateReadingTime(content);
+      req.body.approxReadingTime = readingTime;
+      const { _id } = req.user;
+      req.body.userId = _id;
+      const result = await postController.createNewPost(req.body);
+      PublishMessage(
+        channel,
+        XTSOCIAL_BINDING_KEY,
+        JSON.stringify({ event: "POST_CREATED", data: result })
+      );
+      res.statusCode = 201;
+      res.send(result);
+    } catch (error) {
+      console.log(error);
+      next(error);
     }
-  );
-
-  app.get("/api/post/list", PostsAuth, async (_, res, next) => {
+  });
+  /*****
+   * FETCH ALL POST
+   *
+   */
+  app.get("/list", PostsAuth, async (_, res, next) => {
     try {
       const result = await postController.getAllPosts();
       res.statusCode = 200;
@@ -46,8 +48,11 @@ export const postRoutes = async (app: Express, channel: any) => {
       next(error);
     }
   });
-
-  app.get("/api/post/:id", PostsAuth, async (req, res, next) => {
+  /*****
+   * FETCH POST BY ID
+   * @param id
+   */
+  app.get("/fetch/:id", PostsAuth, async (req, res, next) => {
     try {
       const result = await postController.getIndividualPost(req.params.id);
       res.statusCode = 200;
@@ -57,8 +62,11 @@ export const postRoutes = async (app: Express, channel: any) => {
       next(error);
     }
   });
-
-  app.post("/api/post/image-upload", PostsAuth, function (req, res) {
+  /*****
+   * UPLOAD IMAGE FOR POST
+   * @body
+   */
+  app.post("/image-upload", PostsAuth, function (req, res) {
     let message = "success";
     multerInstance(req, res, (err) => {
       if (!err) {
@@ -76,7 +84,11 @@ export const postRoutes = async (app: Express, channel: any) => {
   });
 
   // THis is just a __private link__ for now for deleting the post
-  app.delete("/api/post/:id", PostsAuth, async (req, res, next) => {
+  /*****
+   * DELETE POST BY ID
+   * @param id
+   */
+  app.delete("/delete/:id", PostsAuth, async (req, res, next) => {
     try {
       const result = await postController.deleteIndividualPost(req.params.id);
       res.statusCode = 200;

@@ -7,8 +7,6 @@ const {
   GenerateSalt,
   GenerateSignature,
   ValidatePassword,
-  APIError,
-  BadRequestError,
 } = require("../utils");
 
 class UserController {
@@ -16,7 +14,7 @@ class UserController {
     this.repository = new UserRepository();
   }
   async SignUp(userInputs) {
-    const { firstname, lastname, email, password, phone } = userInputs;
+    const { password } = userInputs;
 
     try {
       // create salt
@@ -25,11 +23,8 @@ class UserController {
       let userPassword = await GeneratePassword(password, salt);
 
       const createdUser = await this.repository.CreateUser({
-        firstname,
-        lastname,
-        email,
+        ...userInputs,
         password: userPassword,
-        phone,
         salt,
       });
       if (!createdUser) {
@@ -38,7 +33,7 @@ class UserController {
 
       return FormateData({ user: createdUser });
     } catch (error) {
-      throw new APIError("Data Not found", error);
+      throw error;
     }
   }
   async SignIn({ email, password }) {

@@ -3,4 +3,5 @@ module.exports = {
   PostModel: require('./Posts'),
   CommentModel: require('./Comments'),
   ApplaudModel: require('./applaud'),
+  ShareModel: require("./SharePost"),
 };

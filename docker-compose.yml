@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   #MongoDB services
@@ -26,6 +26,7 @@ services:
     depends_on:
       - rabbitmq
     command: rabbitmq:5672
+
   #Node users API service
   users:
     build:
@@ -82,12 +83,13 @@ services:
     build:
       context: ./comments
       dockerfile: Dockerfile
+    container_name: comments
     restart: always
     ports:
       - 8002:8002
     volumes:
       - ./comments:/comments/src/app/
-    env_file: query/.env.dev
+    env_file: comments/.env.dev
     depends_on:
       - waitforrabbit
       - mongo_db
@@ -101,20 +103,16 @@ services:
     container_name: shares
     restart: always
     ports:
-      - 8003:8002
+      - 8004:8004
     volumes:
       - ./shares:/shares/src/app
-    environment:
-      APP_SECRET: 'barkat'
-      MONGODB_URI: 'mongodb://mongo_db:27017/shares'
-      PORT: 8002
-      MOJO_API_KEY: 'test-39c833cd-adc0-4787-8027-400b8551d49f'
-      MESSAGE_BROKER_URL: 'amqp://guest:guest@rabbitmq:5672'
+    env_file: shares/.env.dev
     depends_on:
       - waitforrabbit
       - mongo_db
       - rabbitmq
 
+  #Node applauds API service
   applauds:
     build:
       context: ./applauds
@@ -125,16 +123,28 @@ services:
       - 8003:8003
     volumes:
       - ./applauds:/applauds/src/app
-    environment:
-      APP_SECRET: 'barkat'
-      MONGODB_URI: 'mongodb://mongo_db:27017/applauds'
-      PORT: 8003
-      MOJO_API_KEY: 'test-39c833cd-adc0-4787-8027-400b8551d49f'
-      MESSAGE_BROKER_URL: 'amqp://guest:guest@rabbitmq:5672'
+    env_file: applauds/.env.dev
     depends_on:
       - waitforrabbit
       - mongo_db
       - rabbitmq
+
+  #Node applauds API service
+  nginxproxy:
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    container_name: nginxproxy
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - query
+      - posts
+      - users
+      - comments
+      - applauds
+      - shares
 
 volumes:
   mongo_db: {}
