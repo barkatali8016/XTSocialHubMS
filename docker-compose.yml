@@ -137,7 +137,7 @@ services:
     container_name: nginxproxy
     restart: always
     ports:
-      - 80:80
+      - 3000:80
     depends_on:
       - query
       - posts
