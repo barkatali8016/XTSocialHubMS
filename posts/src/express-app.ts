@@ -12,7 +12,7 @@ export default async (app: Express, channel: any) => {
   app.use(urlencoded({ extended: true, limit: "1mb" }));
   app.use(cors());
   app.use(express.static(__dirname + "/public"));
-  app.use("/asset/images", express.static("images"));
+  app.use("/images", express.static(__dirname + "/asset/images"));
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   // Added comment

@@ -16,7 +16,7 @@ const StartServer = async () => {
     // EXPRESS APP
     await expressApp(app, channel);
     app.get("/", (req, res) => {
-      return res.send("HI WELCOME TO XT SOCIAL HUB");
+      return res.send("HI WELCOME TO XT SOCIAL HUB - Posts microapp");
     });
     app
       .listen(configuration.PORT, () => {

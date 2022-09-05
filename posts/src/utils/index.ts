@@ -3,6 +3,7 @@ import amqplib from "amqplib";
 import { configuration } from "../config";
 const { APP_SECRET, EXCHANGE_NAME } = configuration;
 const MESSAGE_BROKER_URL: any = configuration.MESSAGE_BROKER_URL;
+export { STATUS_CODES } from './app-errors';
 
 // Returns the time in minutes
 export const CalculateReadingTime = (content: string): number => {
