@@ -1,11 +1,11 @@
-const { ApplaudController } = require('../controllers');
+const { ApplaudController } = require("../controllers");
 const {
   validateSignUpBody,
   validateSignInBody,
-} = require('../utils/validators');
-const { STATUS_CODES } = require('../utils/app-errors');
-const { EMOJI_LIST, XTSOCIAL_BINDING_KEY } = require('../config');
-const { PublishMessage } = require('../utils');
+} = require("../utils/validators");
+const { STATUS_CODES } = require("../utils/app-errors");
+const { EMOJI_LIST, XTSOCIAL_BINDING_KEY } = require("../config");
+const { PublishMessage } = require("../utils");
 
 module.exports = async (app, channel) => {
   const applaudController = new ApplaudController();
@@ -15,7 +15,7 @@ module.exports = async (app, channel) => {
    * @body postId applaudKey
    * @URL localhost:80/applaud
    */
-  app.post('/applaud', async (req, res, next) => {
+  app.post("/applaud", async (req, res, next) => {
     // #swagger.tags = ['Applauds']
     // #swagger.description = 'To save applaud details'
 
@@ -24,7 +24,7 @@ module.exports = async (app, channel) => {
       if (!EMOJI_LIST.includes(applaudKey)) {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
-          .json({ error: 'Invalid Applaud Key' });
+          .json({ error: "Invalid Applaud Key" });
       }
       const userId = req.user._id;
 
@@ -38,13 +38,13 @@ module.exports = async (app, channel) => {
         PublishMessage(
           channel,
           XTSOCIAL_BINDING_KEY,
-          JSON.stringify({ event: 'APPLAUD_CREATED', data })
+          JSON.stringify({ event: "APPLAUD_CREATED", data })
         );
         return res.status(STATUS_CODES.APPLAUD_CREATED).json(data);
       } else {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
-          .json({ error: 'Applaud already exist.' });
+          .json({ error: "Applaud already exist." });
       }
     } catch (error) {
       next(error);
@@ -56,7 +56,7 @@ module.exports = async (app, channel) => {
    * @body applaudId, applaudKey
    * @URL localhost:80/applaud
    */
-  app.put('/applaud', async (req, res, next) => {
+  app.put("/applaud", async (req, res, next) => {
     // #swagger.tags = ['Applauds']
     // #swagger.description = 'To update applaud details'
     try {
@@ -66,7 +66,7 @@ module.exports = async (app, channel) => {
       if (!EMOJI_LIST.includes(applaudKey)) {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
-          .json({ error: 'Invalid Applaud Key' });
+          .json({ error: "Invalid Applaud Key" });
       }
 
       const { data } = await applaudController.updateApplaud({
@@ -79,13 +79,13 @@ module.exports = async (app, channel) => {
         PublishMessage(
           channel,
           XTSOCIAL_BINDING_KEY,
-          JSON.stringify({ event: 'APPLAUD_UPDATED', data })
+          JSON.stringify({ event: "APPLAUD_UPDATED", data })
         );
         return res.status(STATUS_CODES.APPLAUD_UPDATED).json(data);
       } else {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
-          .json({ error: 'Applaud already exist.' });
+          .json({ error: "Applaud already exist." });
       }
     } catch (error) {
       next(error);
@@ -98,7 +98,7 @@ module.exports = async (app, channel) => {
    * @URL localhost:80/applauds/1234
    */
 
-  app.delete('/applaud/:id', async (req, res, next) => {
+  app.delete("/applaud/:id", async (req, res, next) => {
     // #swagger.tags = ['Applauds']
     // #swagger.description = 'To delete applaud details'
     try {
@@ -112,13 +112,13 @@ module.exports = async (app, channel) => {
         PublishMessage(
           channel,
           XTSOCIAL_BINDING_KEY,
-          JSON.stringify({ event: 'APPLAUD_DELETED', data })
+          JSON.stringify({ event: "APPLAUD_DELETED", data })
         );
         return res.status(STATUS_CODES.APPLAUD_DELETED).json(data);
       } else {
         return res
           .status(STATUS_CODES.NOT_FOUND)
-          .json({ error: 'Applaud not found' });
+          .json({ error: "Applaud not found" });
       }
     } catch (error) {
       next(error);
@@ -130,7 +130,7 @@ module.exports = async (app, channel) => {
    * @params postId
    * @URL localhost:80/applaud/1234
    */
-  app.get('/applaud/:postId', async (req, res, next) => {
+  app.get("/applaud/:postId", async (req, res, next) => {
     // #swagger.tags = ['Applauds']
     // #swagger.description = 'To fetch applaud details'
     try {
@@ -140,7 +140,7 @@ module.exports = async (app, channel) => {
       } else {
         return res
           .status(STATUS_CODES.NOT_FOUND)
-          .json({ error: 'Applaud not found' });
+          .json({ error: "Applaud not found" });
       }
     } catch (error) {
       next(error);
