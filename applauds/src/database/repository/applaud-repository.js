@@ -20,7 +20,6 @@ class ApplaudRepository {
         if (!recordExist.isDeleted) {
           return null;
         } else {
-          console.log('here', recordExist);
           return await ApplaudModel.findByIdAndUpdate(
             { _id: recordExist._id },
             { isDeleted: false, applaudKey },
@@ -34,7 +33,7 @@ class ApplaudRepository {
       throw new APIError(
         'API Error',
         STATUS_CODES.INTERNAL_ERROR,
-        'Unable to Applaudas'
+        'Unable to Applaud'
       );
     }
   }
