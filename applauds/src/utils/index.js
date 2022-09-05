@@ -22,7 +22,7 @@ module.exports.FormatData = (data) => {
   if (data) {
     return { data };
   } else {
-    throw new Error('Data Not found!');
+    throw new BadRequestError('Data does not exist', STATUS_CODES.NOT_FOUND);
   }
 };
 

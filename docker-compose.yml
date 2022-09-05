@@ -26,6 +26,7 @@ services:
     depends_on:
       - rabbitmq
     command: rabbitmq:5672
+
   #Node users API service
   users:
     build:
@@ -111,6 +112,7 @@ services:
       - mongo_db
       - rabbitmq
 
+  #Node applauds API service
   applauds:
     build:
       context: ./applauds
@@ -126,6 +128,23 @@ services:
       - waitforrabbit
       - mongo_db
       - rabbitmq
+
+  #Node applauds API service
+  nginxproxy:
+    build:
+      context: ./proxy
+      dockerfile: Dockerfile
+    container_name: nginxproxy
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - query
+      - posts
+      - users
+      - comments
+      - applauds
+      - shares
 
 volumes:
   mongo_db: {}

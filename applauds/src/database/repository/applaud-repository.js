@@ -11,16 +11,24 @@ class ApplaudRepository {
   async createApplaud({ postId, userId, applaudKey }) {
     try {
       const recordExist = await ApplaudModel.findOne({ postId, userId });
-      if (recordExist) {
-        return null;
-      }
       const applaudModel = new ApplaudModel({
         postId,
         userId,
         applaudKey,
       });
-      const applaudResult = await applaudModel.save();
-      return applaudResult;
+      if (recordExist) {
+        if (!recordExist.isDeleted) {
+          return null;
+        } else {
+          return await ApplaudModel.findByIdAndUpdate(
+            { _id: recordExist._id },
+            { isDeleted: false, applaudKey },
+            { new: true }
+          );
+        }
+      } else {
+        return await applaudModel.save();
+      }
     } catch (err) {
       throw new APIError(
         'API Error',
@@ -30,22 +38,21 @@ class ApplaudRepository {
     }
   }
 
-  async updateApplaud({ applaudId, applaudKey }) {
+  async updateApplaud({ applaudId, applaudKey, userId }) {
     try {
       if (!mongoose.Types.ObjectId.isValid(applaudId)) {
         throw new BadRequestError('Invalid Applaud ID');
       }
-      const applaudResult = await ApplaudModel.findByIdAndUpdate(
-        applaudId,
-        { applaudKey },
+      const applaudResult = await ApplaudModel.findOneAndUpdate(
+        { _id: applaudId, userId },
+        { applaudKey, isDeleted: false },
         {
           new: true,
         }
       );
-      console.log(applaudResult);
       if (!applaudResult) {
         throw new BadRequestError(
-          'Applaud ID does not exist',
+          'Applaud does not exist for the user',
           STATUS_CODES.NOT_FOUND
         );
       }
@@ -55,13 +62,14 @@ class ApplaudRepository {
     }
   }
 
-  async deleteApplaud(id) {
+  async deleteApplaud(id, userId) {
     try {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new BadRequestError('Invalid Applaud ID');
       }
-      const deleted = await ApplaudModel.findByIdAndUpdate(
-        id,
+      console.log(userId);
+      const deleted = await ApplaudModel.findOneAndUpdate(
+        { _id: id, userId },
         {
           isDeleted: true,
         },
@@ -71,7 +79,7 @@ class ApplaudRepository {
       );
       if (!deleted) {
         throw new BadRequestError(
-          'Applaud ID does not exist',
+          'Applaud does not exist for the user',
           STATUS_CODES.NOT_FOUND
         );
       }

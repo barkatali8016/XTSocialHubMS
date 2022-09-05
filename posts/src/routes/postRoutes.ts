@@ -31,9 +31,13 @@ const createPost = async (content: string, channel: any, req: any, postControlle
   return result;
 }
 
+/*****
+ * CREATE POST
+ * @body
+ */
 export const postRoutes = async (app: Express, channel: any) => {
   const postController = new PostController();
-  app.post("/api/post/create", PostsAuth, async (req: any, res: any, next: any) => {
+  app.post("/create", PostsAuth, async (req: any, res: any, next: any) => {
     try {
       const { content, imageURL, schedule } = req.body;
       if (!content && !imageURL) {
@@ -41,23 +45,29 @@ export const postRoutes = async (app: Express, channel: any) => {
           error: 'Either post content or Image URL is required',
         });
       }
+      const { _id } = req.user;
+      req.body.userId = _id;
+      // TODO: time should be in UTC format.
       if (schedule && schedule.time) {
         const job = scheduleJob(schedule.date, function () {
-          createPost(content, channel, req, postController)
+          createPost(content, channel, req, postController);
           job.cancel();
         });
+        res.status(STATUS_CODES.OK).send({ message: 'Your post is scheduled at ' + schedule.date + ' time.' });
+      } else {
+        const result = await createPost(content, channel, req, postController);
+        res.status(STATUS_CODES.CREATED).send(result);
       }
-      const result = await createPost(content, channel, req, postController);
-      res.statusCode = 201;
-      res.send(result);
     } catch (error) {
       console.log(error);
       next(error);
     }
-  }
-  );
-
-  app.get("/api/post/list", PostsAuth, async (_, res, next) => {
+  });
+  /*****
+   * FETCH ALL POST
+   *
+   */
+  app.get("/list", PostsAuth, async (_, res, next) => {
     try {
       const result = await postController.getAllPosts();
       res.status(STATUS_CODES.OK).send(result);
@@ -66,8 +76,11 @@ export const postRoutes = async (app: Express, channel: any) => {
       next(error);
     }
   });
-
-  app.get("/api/post/:id", PostsAuth, async (req, res, next) => {
+  /*****
+   * FETCH POST BY ID
+   * @param id
+   */
+  app.get("/:id", PostsAuth, async (req, res, next) => {
     try {
       if (!req.params.id) {
         return res.status(STATUS_CODES.BAD_REQUEST).json({
@@ -81,9 +94,12 @@ export const postRoutes = async (app: Express, channel: any) => {
       next(error);
     }
   });
-
-  app.post("/api/post/image-upload", PostsAuth, (req, res) => {
-    let message = 'success';
+  /*****
+   * UPLOAD IMAGE FOR POST
+   * @body
+   */
+  app.post("/image-upload", PostsAuth, function (req, res) {
+    let message = "success";
     multerInstance(req, res, (err) => {
       if (!err) {
         console.log(req.file);
@@ -99,7 +115,11 @@ export const postRoutes = async (app: Express, channel: any) => {
   });
 
   // THis is just a __private link__ for now for deleting the post
-  app.delete("/api/post/:id", PostsAuth, async (req, res, next) => {
+  /*****
+   * DELETE POST BY ID
+   * @param id
+   */
+  app.delete("/:id", PostsAuth, async (req, res, next) => {
     try {
       if (!req.params.id) {
         return res.status(STATUS_CODES.BAD_REQUEST).json({

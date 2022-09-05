@@ -10,7 +10,11 @@ const { SubscribeMessage } = require("../utils");
 module.exports = async (app, channel) => {
   const queryController = new QueryController();
   await SubscribeMessage(channel, queryController);
-  //FETCH ALL POST ROUTES
+
+  /*****
+   * FETCH ALL POST
+   *
+   */
   app.get("/fetch/all-posts", async (req, res, next) => {
     try {
       const { page = 1, limit = 10 } = req.query;
@@ -26,6 +30,10 @@ module.exports = async (app, channel) => {
       next(error);
     }
   });
+  /*****
+   * FETCH ALL POST BY CURRENT USER ID
+   *
+   */
   app.get("/fetch/posts/current-user", UserAuth, async (req, res, next) => {
     const userId = req.user._id;
     try {
@@ -47,6 +55,10 @@ module.exports = async (app, channel) => {
     }
   });
 
+  /*****
+   * FETCH ALL POST BY USER ID
+   * @params userId
+   */
   app.get("/fetch/posts/:userId", async (req, res, next) => {
     try {
       const { userId } = req.params;

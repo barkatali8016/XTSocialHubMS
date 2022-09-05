@@ -7,8 +7,6 @@ const {
   GenerateSalt,
   GenerateSignature,
   ValidatePassword,
-  APIError,
-  BadRequestError,
 } = require("../utils");
 
 class UserController {
@@ -35,7 +33,7 @@ class UserController {
 
       return FormateData({ user: createdUser });
     } catch (error) {
-      throw new APIError("Data Not found", error);
+      throw error;
     }
   }
   async SignIn({ email, password }) {

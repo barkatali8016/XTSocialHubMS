@@ -10,14 +10,24 @@ const { ApplaudModel, PostModel } = require('../models');
 class ApplaudRepository {
   async createApplaud(applaudInputs) {
     try {
-      console.log('applaudInp', applaudInputs);
-      const applaudModel = new ApplaudModel(applaudInputs);
-      const applaudResult = await applaudModel.save();
-      await PostModel.findOneAndUpdate(
-        { _id: applaudInputs.postId },
-        { $push: { applauds: applaudResult._id } }
-      );
-      return applaudResult;
+      const recordExist = await ApplaudModel.findById(applaudInputs._id);
+
+      if (recordExist) {
+        return await ApplaudModel.findByIdAndUpdate(
+          { _id: recordExist._id },
+          {
+            isDeleted: applaudInputs.isDeleted,
+            applaudKey: applaudInputs.applaudKey,
+          },
+          { new: true }
+        );
+      } else {
+        await applaudModel.save();
+        return await PostModel.findOneAndUpdate(
+          { _id: applaudInputs.postId },
+          { $push: { applauds: applaudResult._id } }
+        );
+      }
     } catch (err) {
       throw err;
     }
@@ -28,7 +38,10 @@ class ApplaudRepository {
       console.log('applaudInp', applaudInputs);
       const applaudResult = await ApplaudModel.findByIdAndUpdate(
         applaudInputs._id,
-        { applaudKey: applaudInputs.applaudKey },
+        {
+          applaudKey: applaudInputs.applaudKey,
+          isDeleted: applaudInputs.isDeleted,
+        },
         {
           new: true,
         }

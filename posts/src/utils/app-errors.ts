@@ -4,6 +4,7 @@ export const STATUS_CODES = {
     UN_AUTHORISED: 403,
     NOT_FOUND: 404,
     INTERNAL_ERROR: 500,
+    CREATED: 201
 }
 
 // interface IErrorInformation {
