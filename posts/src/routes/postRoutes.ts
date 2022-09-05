@@ -103,7 +103,7 @@ export const postRoutes = async (app: Express, channel: any) => {
     multerInstance(req, res, (err) => {
       if (!err) {
         console.log(req.file);
-        return res.status(STATUS_CODES.OK).send({ message, imageURL: `images/${req.file?.filename}` });
+        return res.status(STATUS_CODES.OK).send({ message, imageURL: `/posts/images/${req.file?.filename}` });
       }
       if (err instanceof MulterError && err.code === 'LIMIT_FILE_SIZE') {
         message = `Image size should be less than 2MB.`;
