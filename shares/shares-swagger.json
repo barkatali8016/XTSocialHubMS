@@ -2,32 +2,30 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "SHARES MICROSERVICE",
+    "description": "Facilitate sharing a post, getting share count and list of users of a particular post."
   },
   "host": "localhost:3000",
-  "basePath": "/",
+  "basePath": "",
   "schemes": [
     "http"
   ],
+  "tags": [
+    {
+      "name": "shares",
+      "description": "Everything about sharing a post."
+    }
+  ],
   "paths": {
-    "/post/{postId}/shareCount": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "postId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {}
-      }
-    },
-    "/post/{postId}/share": {
+    "/shares/{postId}/share": {
       "put": {
-        "description": "",
+        "tags": [
+          "shares"
+        ],
+        "summary": "Share a post by postID.",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "postId",
@@ -39,9 +37,42 @@
         "responses": {}
       }
     },
-    "/post/{postId}/share/users": {
+    "/shares/{postId}/shareCount": {
       "get": {
-        "description": "",
+        "tags": [
+          "shares"
+        ],
+        "summary": "Fetch the share count of a post by postID.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "./src/database/models/share-post-model.js"
+            }
+          }
+        }
+      }
+    },
+    "/shares/{postId}/users": {
+      "get": {
+        "tags": [
+          "shares"
+        ],
+        "summary": "Fetch the users who shared a post by postID.",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "postId",
