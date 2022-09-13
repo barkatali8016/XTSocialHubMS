@@ -15,7 +15,7 @@ module.exports = async (app, channel) => {
    * @body postId applaudKey
    * @URL localhost:80/applaud
    */
-  app.post('/applaud', async (req, res, next) => {
+  app.post('/create', async (req, res, next) => {
     // #swagger.tags = ['Applauds']
     // #swagger.description = 'To save applaud details'
 
@@ -56,7 +56,7 @@ module.exports = async (app, channel) => {
    * @body applaudId, applaudKey
    * @URL localhost:80/applaud
    */
-  app.put('/applaud', async (req, res, next) => {
+  app.put('/update', async (req, res, next) => {
     // #swagger.tags = ['Applauds']
     // #swagger.description = 'To update applaud details'
     try {
@@ -98,7 +98,7 @@ module.exports = async (app, channel) => {
    * @URL localhost:80/applauds/1234
    */
 
-  app.delete('/applaud/:id', async (req, res, next) => {
+  app.delete('/delete/:id', async (req, res, next) => {
     // #swagger.tags = ['Applauds']
     // #swagger.description = 'To delete applaud details'
     try {
@@ -130,7 +130,7 @@ module.exports = async (app, channel) => {
    * @params postId
    * @URL localhost:80/applaud/1234
    */
-  app.get('/applaud/:postId', async (req, res, next) => {
+  app.get('/fetch/:postId', async (req, res, next) => {
     // #swagger.tags = ['Applauds']
     // #swagger.description = 'To fetch applaud details'
     try {
