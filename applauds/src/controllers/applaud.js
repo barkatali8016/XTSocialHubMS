@@ -1,6 +1,10 @@
 const { ApplaudRepository } = require('../database');
 const { FormatData } = require('../utils');
-const { APIError, STATUS_CODES } = require('../utils/app-errors');
+const {
+  APIError,
+  STATUS_CODES,
+  BadRequestError,
+} = require('../utils/app-errors');
 
 class ApplaudController {
   constructor() {
@@ -13,17 +17,24 @@ class ApplaudController {
         userId,
         applaudKey,
       });
+      if (!createdApplaud) {
+        throw new BadRequestError(
+          'Data already exist',
+          STATUS_CODES.BAD_REQUEST
+        );
+      }
       return FormatData(createdApplaud);
     } catch (error) {
       throw error;
     }
   }
 
-  async updateApplaud({ applaudId, applaudKey }) {
+  async updateApplaud({ applaudId, applaudKey, userId }) {
     try {
       const updatedApplaud = await this.repository.updateApplaud({
         applaudId,
         applaudKey,
+        userId,
       });
       return FormatData(updatedApplaud);
     } catch (error) {
@@ -31,9 +42,9 @@ class ApplaudController {
     }
   }
 
-  async deleteApplaud(id) {
+  async deleteApplaud(id, userId) {
     try {
-      const deletedApplaud = await this.repository.deleteApplaud(id);
+      const deletedApplaud = await this.repository.deleteApplaud(id, userId);
       return FormatData(deletedApplaud);
     } catch (error) {
       throw error;

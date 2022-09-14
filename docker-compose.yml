@@ -61,7 +61,7 @@ services:
       - mongo_db
       - rabbitmq
 
-  #Node users API service
+  #Node query API service
   query:
     build:
       context: ./query
@@ -78,7 +78,7 @@ services:
       - mongo_db
       - rabbitmq
 
-  #Node comments API service
+      #Node comments API service
   comments:
     build:
       context: ./comments

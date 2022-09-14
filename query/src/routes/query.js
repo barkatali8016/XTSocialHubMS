@@ -15,12 +15,12 @@ module.exports = async (app, channel) => {
    * FETCH ALL POST
    *
    */
-  app.get("/fetch/all-posts", async (req, res, next) => {
+  app.get("/all-posts", async (req, res, next) => {
     try {
       const { page = 1, limit = 10 } = req.query;
       const data = await queryController.getAllPosts({ page, limit });
       if (data) {
-        return res.status(STATUS_CODES.USER_CREATED).json(data);
+        return res.status(STATUS_CODES.OK).json(data);
       } else {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
@@ -34,7 +34,7 @@ module.exports = async (app, channel) => {
    * FETCH ALL POST BY CURRENT USER ID
    *
    */
-  app.get("/fetch/posts/current-user", UserAuth, async (req, res, next) => {
+  app.get("/posts/current-user", UserAuth, async (req, res, next) => {
     const userId = req.user._id;
     try {
       const { page = 1, limit = 10 } = req.query;
@@ -44,7 +44,7 @@ module.exports = async (app, channel) => {
         limit,
       });
       if (data) {
-        return res.status(STATUS_CODES.USER_CREATED).json(data);
+        return res.status(STATUS_CODES.OK).json(data);
       } else {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
@@ -59,7 +59,7 @@ module.exports = async (app, channel) => {
    * FETCH ALL POST BY USER ID
    * @params userId
    */
-  app.get("/fetch/posts/:userId", async (req, res, next) => {
+  app.get("/posts/:userId", async (req, res, next) => {
     try {
       const { userId } = req.params;
       const { page = 1, limit = 10 } = req.query;
@@ -69,7 +69,7 @@ module.exports = async (app, channel) => {
         limit,
       });
       if (data) {
-        return res.status(STATUS_CODES.USER_CREATED).json(data);
+        return res.status(STATUS_CODES.OK).json(data);
       } else {
         return res
           .status(STATUS_CODES.BAD_REQUEST)
